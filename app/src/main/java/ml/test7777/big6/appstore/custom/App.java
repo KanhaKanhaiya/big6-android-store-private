@@ -14,8 +14,9 @@ public class App {
 	private Date updatedOn;
 	private String size;
 	private String compatibleWith;
+	private String description;
 
-	public App(String name, String oneLineDescription, String packageName, String version, int versionCode, String whatsNew, ArrayList<String> screenshots, Date updatedOn, String size, String compatibleWith)
+	public App(String name, String oneLineDescription, String packageName, String version, int versionCode, String whatsNew, ArrayList<String> screenshots, Date updatedOn, String size, String compatibleWith, String description)
 	{
 		this.name = name;
 		this.oneLineDescription = oneLineDescription;
@@ -27,6 +28,7 @@ public class App {
 		this.updatedOn = updatedOn;
 		this.size = size;
 		this.compatibleWith = compatibleWith;
+		this.description = description;
 	}
 	
 	public App() {}
@@ -129,5 +131,11 @@ public class App {
 		this.compatibleWith = compatibleWith;
 	}
 
+	public String getDescription() {
+		return description;
+	}
 
+	public void setDescription(String description) {
+		this.description = description;
+	}
 }
