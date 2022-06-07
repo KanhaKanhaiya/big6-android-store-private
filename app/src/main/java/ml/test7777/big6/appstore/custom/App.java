@@ -5,7 +5,7 @@ import java.util.*;
 public class App {
 	
 	private String name;
-	private String oneLinedescription;
+	private String oneLineDescription;
 	private String packageName;
 	private String version;
 	private int versionCode;
@@ -13,11 +13,12 @@ public class App {
 	private ArrayList<String> screenshots;
 	private Date updatedOn;
 	private String size;
+	private String compatibleWith;
 
-	public App(String name, String oneLinedescription, String packageName, String version, int versionCode, String whatsNew, ArrayList<String> screenshots, Date updatedOn, String size)
+	public App(String name, String oneLineDescription, String packageName, String version, int versionCode, String whatsNew, ArrayList<String> screenshots, Date updatedOn, String size, String compatibleWith)
 	{
 		this.name = name;
-		this.oneLinedescription = oneLinedescription;
+		this.oneLineDescription = oneLineDescription;
 		this.packageName = packageName;
 		this.version = version;
 		this.versionCode = versionCode;
@@ -25,6 +26,7 @@ public class App {
 		this.screenshots = screenshots;
 		this.updatedOn = updatedOn;
 		this.size = size;
+		this.compatibleWith = compatibleWith;
 	}
 	
 	public App() {}
@@ -39,14 +41,14 @@ public class App {
 		return name;
 	}
 
-	public void setOneLinedescription(String oneLinedescription)
+	public void setOneLineDescription(String oneLineDescription)
 	{
-		this.oneLinedescription = oneLinedescription;
+		this.oneLineDescription = oneLineDescription;
 	}
 
-	public String getOneLinedescription()
+	public String getOneLineDescription()
 	{
-		return oneLinedescription;
+		return oneLineDescription;
 	}
 
 	public void setPackageName(String packageName)
@@ -118,5 +120,14 @@ public class App {
 	{
 		return size;
 	}
-	
+
+	public String getCompatibleWith() {
+		return compatibleWith;
+	}
+
+	public void setCompatibleWith(String compatibleWith) {
+		this.compatibleWith = compatibleWith;
+	}
+
+
 }
