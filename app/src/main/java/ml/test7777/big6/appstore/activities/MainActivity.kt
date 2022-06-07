@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import ml.test7777.big6.appstore.custom.App
 import ml.test7777.big6.appstore.databinding.ActivityMainBinding
 
 private lateinit var  binding: ActivityMainBinding
@@ -25,8 +26,10 @@ class MainActivity : AppCompatActivity() {
         val collectionRef = cloudFirestore.collection("AppStore")
         collectionRef.get()
             .addOnSuccessListener { result ->
+                val appsList: List<App>
                 for (document in result) {
                     TODO("Add App List Handler")
+
             }
 
         }

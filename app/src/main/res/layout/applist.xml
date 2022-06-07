@@ -30,11 +30,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/appIconImageView"
         app:layout_constraintTop_toBottomOf="@id/appNameTextView"
-        app:layout_constraintBottom_toTopOf="@id/AppSizeTextView"
+        app:layout_constraintBottom_toTopOf="@id/appSizeTextView"
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/AppSizeTextView"
+        android:id="@+id/appSizeTextView"
         android:textSize="20sp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
