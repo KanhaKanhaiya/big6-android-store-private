@@ -13,7 +13,7 @@ import ml.test7777.big6.appstore.databinding.ActivityMainBinding
 
 private lateinit var  binding: ActivityMainBinding
 @SuppressLint("StaticFieldLeak")
-val cloudFirestore = Firebase.firestore
+private val cloudFirestore = Firebase.firestore
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,12 +29,15 @@ class MainActivity : AppCompatActivity() {
         val collectionRef = cloudFirestore.collection("AppStore")
         collectionRef.get()
             .addOnSuccessListener { result ->
+
                 val appsList: MutableList<App> = ArrayList()
+
                 for (document in result) {
                     appsList.add(document.toObject())
                 }
 
                 val adapter = AppListAdapter(appsList, this)
+
                 binding.appsListRecyclerView.adapter = adapter
                 binding.appsListRecyclerView.layoutManager = LinearLayoutManager(this)
                 binding.appsListRecyclerView.setHasFixedSize(true)
