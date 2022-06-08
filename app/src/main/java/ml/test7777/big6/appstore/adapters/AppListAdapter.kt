@@ -1,15 +1,17 @@
 package ml.test7777.big6.appstore.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import ml.test7777.big6.appstore.R
 import ml.test7777.big6.appstore.custom.App
 
-class AppListAdapter (private val appList: List<App>) : RecyclerView.Adapter<AppListAdapter.ViewHolder?>() {
+class AppListAdapter (private val appList: List<App>, private val context: Context) : RecyclerView.Adapter<AppListAdapter.ViewHolder?>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val appIconImageView: ImageView = itemView.findViewById(R.id.appIconImageView)
@@ -33,11 +35,14 @@ class AppListAdapter (private val appList: List<App>) : RecyclerView.Adapter<App
         val appDescriptionTextView = holder.appDescriptionTextView
         val appSizeTextView = holder.appSizeTextView
 
+        Glide
+            .with(context)
+            .load(app.icon)
+            .into(appIconImageView)
+
         appNameTextView.text = app.name
         appDescriptionTextView.text = app.oneLineDescription
         appSizeTextView.text = app.size
-
-        TODO("Add Glide for Image Loading")
     }
 
     override fun getItemCount(): Int {

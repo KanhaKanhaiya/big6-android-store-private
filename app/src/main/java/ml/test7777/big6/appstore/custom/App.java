@@ -15,8 +15,9 @@ public class App {
 	private String size;
 	private String compatibleWith;
 	private String description;
+	private String icon;
 
-	public App(String name, String oneLineDescription, String packageName, String version, int versionCode, String whatsNew, ArrayList<String> screenshots, Date updatedOn, String size, String compatibleWith, String description)
+	public App(String name, String oneLineDescription, String packageName, String version, int versionCode, String whatsNew, ArrayList<String> screenshots, Date updatedOn, String size, String compatibleWith, String description, String icon)
 	{
 		this.name = name;
 		this.oneLineDescription = oneLineDescription;
@@ -29,6 +30,7 @@ public class App {
 		this.size = size;
 		this.compatibleWith = compatibleWith;
 		this.description = description;
+		this.icon = icon;
 	}
 	
 	public App() {}
@@ -137,5 +139,13 @@ public class App {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
 	}
 }

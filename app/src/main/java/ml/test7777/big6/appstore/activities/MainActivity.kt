@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import ml.test7777.big6.appstore.adapters.AppListAdapter
 import ml.test7777.big6.appstore.custom.App
@@ -28,12 +29,12 @@ class MainActivity : AppCompatActivity() {
         val collectionRef = cloudFirestore.collection("AppStore")
         collectionRef.get()
             .addOnSuccessListener { result ->
-                val appsList: List<App>
+                val appsList: MutableList<App> = ArrayList()
                 for (document in result) {
-                    TODO("Add App List Handler")
+                    appsList.add(document.toObject())
                 }
 
-                val adapter = AppListAdapter(appsList)
+                val adapter = AppListAdapter(appsList, this)
                 binding.appsListRecyclerView.adapter = adapter
                 binding.appsListRecyclerView.layoutManager = LinearLayoutManager(this)
                 binding.appsListRecyclerView.setHasFixedSize(true)
