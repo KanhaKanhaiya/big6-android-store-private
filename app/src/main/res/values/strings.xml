@@ -5,4 +5,6 @@
     <string name="about_this_app">About this app</string>
     <string name="download_size">Download Size</string>
     <string name="version">Version</string>
+    <string name="updated_on">Updated On</string>
+    <string name="what_s_new">What\'s New</string>
 </resources>

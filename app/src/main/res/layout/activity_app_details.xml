@@ -33,7 +33,6 @@
         android:id="@+id/installButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/install"
         app:layout_constraintTop_toBottomOf="@id/appDetailsNameTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/Divider1"
@@ -81,7 +80,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/Divider2"
+                app:layout_constraintBottom_toTopOf="@id/Divider3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="25dp"
@@ -89,15 +88,106 @@
                 android:layout_marginEnd="20dp" />
 
             <com.google.android.material.divider.MaterialDivider
-                android:id="@+id/Divider2"
+                android:id="@+id/Divider3"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 app:layout_constraintTop_toBottomOf="@id/appDetailsDescriptionTextView"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp" />
+
+            <TextView
+                android:id="@+id/WhatsNew"
+                android:text="@string/what_s_new"
+                android:layout_marginStart="25dp"
+                android:textStyle="bold|italic"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/Divider3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/appDetailsWhatsNewTextView"
+                app:layout_constraintTop_toBottomOf="@id/WhatsNew"
+                android:layout_marginTop="2dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/Divider2"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintTop_toBottomOf="@id/appDetailsWhatsNewTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_width="match_parent"
                 android:layout_height="1dp" />
 
+            <TextView
+                android:id="@+id/Version"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/version"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="25dp"
+                app:layout_constraintTop_toBottomOf="@id/Divider2"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/appDetailsVersionTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="5dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/Divider2" />
+
+            <TextView
+                android:id="@+id/UpdatedOn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/Version"
+                android:text="@string/updated_on"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="5dp"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/appDetailsUpdatedOnTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/appDetailsVersionTextView" />
+
+            <TextView
+                android:id="@+id/DownloadSize"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/UpdatedOn"
+                android:text="@string/download_size"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="5dp"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+            <TextView
+                android:id="@+id/appDetailsDownloadSizeTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/appDetailsUpdatedOnTextView" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
