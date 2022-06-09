@@ -36,5 +36,4 @@ class ScreenshotsAdapter (private val imagesList: List<String>, private val cont
         return imagesList.size
     }
 
-
 }

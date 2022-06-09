@@ -1,8 +1,9 @@
 package ml.test7777.big6.appstore.custom;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class App {
+public class App implements Serializable {
 	
 	private String name;
 	private String oneLineDescription;
@@ -11,13 +12,13 @@ public class App {
 	private int versionCode;
 	private String whatsNew;
 	private ArrayList<String> screenshots;
-	private Date updatedOn;
+	private String updatedOn;
 	private String size;
 	private String compatibleWith;
 	private String description;
 	private String icon;
 
-	public App(String name, String oneLineDescription, String packageName, String version, int versionCode, String whatsNew, ArrayList<String> screenshots, Date updatedOn, String size, String compatibleWith, String description, String icon)
+	public App(String name, String oneLineDescription, String packageName, String version, int versionCode, String whatsNew, ArrayList<String> screenshots, String updatedOn, String size, String compatibleWith, String description, String icon)
 	{
 		this.name = name;
 		this.oneLineDescription = oneLineDescription;
@@ -105,12 +106,12 @@ public class App {
 		return screenshots;
 	}
 
-	public void setUpdatedOn(Date updatedOn)
+	public void setUpdatedOn(String updatedOn)
 	{
 		this.updatedOn = updatedOn;
 	}
 
-	public Date getUpdatedOn()
+	public String getUpdatedOn()
 	{
 		return updatedOn;
 	}

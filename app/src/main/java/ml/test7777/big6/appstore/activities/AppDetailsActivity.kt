@@ -1,8 +1,11 @@
 package ml.test7777.big6.appstore.activities
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import ml.test7777.big6.appstore.custom.App
 import ml.test7777.big6.appstore.databinding.ActivityAppDetailsBinding
 
 @SuppressLint("StaticFieldLeak")
@@ -14,5 +17,33 @@ class AppDetailsActivity : AppCompatActivity() {
         binding = ActivityAppDetailsBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        val app = intent.getSerializableExtra("APP") as App
+
+        setUpLayout(app)
+    }
+
+    private fun setUpLayout(app: App) {
+        binding.appDetailsNameTextView.text = app.name
+        binding.appDetailsDescriptionTextView.text = app.description
+        binding.appDetailsDownloadSizeTextView.text = app.size
+        binding.appDetailsUpdatedOnTextView.text = app.updatedOn
+        binding.appDetailsVersionTextView.text = app.version
+        binding.appDetailsWhatsNewTextView.text = app.whatsNew
+        binding.installButton.text = if (isAppAlreadyInstalled(app)) "Update" else "Install"
+    }
+
+    private fun isAppAlreadyInstalled(app: App) : Boolean {
+        val packageManager = this.packageManager
+        val intent = Intent(Intent.ACTION_VIEW)
+        if (intent.resolveActivity(packageManager) != null) {
+            try {
+                packageManager.getPackageInfo(app.packageName, PackageManager.GET_ACTIVITIES)
+                return true
+            } catch (e: PackageManager.NameNotFoundException) {
+
+            }
+        }
+        return false
     }
 }

@@ -1,6 +1,7 @@
 package ml.test7777.big6.appstore.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +10,12 @@ import androidx.recyclerview.widget.RecyclerView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import ml.test7777.big6.appstore.R
+import ml.test7777.big6.appstore.activities.AppDetailsActivity
+import ml.test7777.big6.appstore.activities.MainActivity
 import ml.test7777.big6.appstore.custom.App
+import ml.test7777.big6.appstore.onClicks.AppListRecyclerView
 
-class AppListAdapter (private val appList: List<App>, private val context: Context) : RecyclerView.Adapter<AppListAdapter.ViewHolder?>() {
+class AppListAdapter (private val appList: List<App>, private val context: Context, private val recyclerView: RecyclerView) : RecyclerView.Adapter<AppListAdapter.ViewHolder?>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val appIconImageView: ImageView = itemView.findViewById(R.id.appIconImageView)
@@ -23,8 +27,9 @@ class AppListAdapter (private val appList: List<App>, private val context: Conte
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val context = parent.context
         val inflater = LayoutInflater.from(context)
-        val appList = inflater.inflate(R.layout.applist, parent, false)
-        return ViewHolder(appList)
+        val appListView = inflater.inflate(R.layout.applist, parent, false)
+        appListView.setOnClickListener(AppListRecyclerView(appList, recyclerView, context))
+        return ViewHolder(appListView)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
