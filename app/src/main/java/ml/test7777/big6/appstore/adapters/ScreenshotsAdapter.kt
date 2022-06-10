@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.ceylonlabs.imageviewpopup.ImagePopup
 import ml.test7777.big6.appstore.R
 
 class ScreenshotsAdapter (private val imagesList: List<String>, private val context: Context) : RecyclerView.Adapter<ScreenshotsAdapter.ViewHolder>() {
@@ -31,12 +30,6 @@ class ScreenshotsAdapter (private val imagesList: List<String>, private val cont
             .with(context)
             .load(image)
             .into(screenshotImageView)
-
-        val imagePopup = ImagePopup(context)
-        imagePopup.initiatePopup(screenshotImageView.drawable)
-        screenshotImageView.setOnClickListener {
-            imagePopup.viewPopup()
-        }
     }
 
     override fun getItemCount(): Int {

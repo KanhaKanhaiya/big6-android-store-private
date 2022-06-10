@@ -6,12 +6,14 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
+import ml.test7777.big6.appstore.R
 import ml.test7777.big6.appstore.adapters.ScreenshotsAdapter
 import ml.test7777.big6.appstore.custom.App
 import ml.test7777.big6.appstore.databinding.ActivityAppDetailsBinding
 
 @SuppressLint("StaticFieldLeak")
 private lateinit var binding: ActivityAppDetailsBinding
+private lateinit var app: App
 
 class AppDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,40 +22,59 @@ class AppDetailsActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        val app = intent.getSerializableExtra("APP") as App
+        app = intent.getSerializableExtra("APP") as App
 
-        setUpLayout(app)
+        setUpLayout()
     }
 
-    private fun setUpLayout(app: App) {
+    private fun setUpLayout() {
         binding.appDetailsNameTextView.text = app.name
         binding.appDetailsDescriptionTextView.text = app.description
         binding.appDetailsDownloadSizeTextView.text = app.size
         binding.appDetailsUpdatedOnTextView.text = app.updatedOn
         binding.appDetailsVersionTextView.text = app.version
         binding.appDetailsWhatsNewTextView.text = app.whatsNew
-        binding.installButton.text = installButtonText(app)
+        binding.installButton.text = installButtonText()
 
         val adapter = ScreenshotsAdapter(app.screenshots, this)
 
         binding.appDetailsScreenshotRecyclerView.adapter = adapter
         binding.appDetailsScreenshotRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.appDetailsScreenshotRecyclerView.setHasFixedSize(true)
+
+        binding.installButton.setOnClickListener {
+            installButtonClicked()
+        }
     }
 
-    private fun installButtonText(app: App) : String {
+    private fun installButtonClicked() {
+        if (binding.installButton.text === getString(R.string.install) || binding.installButton.text === getString(R.string.update)) {
+            TODO()
+        } else if (binding.installButton.text === getString(R.string.open)) {
+            val openAppIntent = packageManager.getLaunchIntentForPackage(app.packageName)
+            if (openAppIntent !== null) {
+                startActivity(openAppIntent)
+            } else binding.installButton.text = getString(R.string.install)
+        } else if (binding.installButton.text === getString(R.string.uninstall)) {
+            TODO()
+        }
+    }
+
+    private fun installButtonText() : String {
         val packageManager = this.packageManager
         val intent = Intent(Intent.ACTION_VIEW)
         if (intent.resolveActivity(packageManager) != null) {
             try {
                 val appInfo = packageManager.getPackageInfo(app.packageName, PackageManager.GET_ACTIVITIES)
                 return if (appInfo.versionName === app.version) {
-                    "Open"
+                    if (app.isOpenable) {
+                        getString(R.string.open)
+                    } else getString(R.string.uninstall)
                 } else {
-                    "Update"
+                    getString(R.string.update)
                 }
             } catch (e: PackageManager.NameNotFoundException) {}
         }
-        return "Install"
+        return getString(R.string.install)
     }
 }

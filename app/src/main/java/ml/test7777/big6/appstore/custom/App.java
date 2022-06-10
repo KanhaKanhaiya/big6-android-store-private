@@ -17,8 +17,9 @@ public class App implements Serializable {
 	private String compatibleWith;
 	private String description;
 	private String icon;
+	private boolean isOpenable;
 
-	public App(String name, String oneLineDescription, String packageName, String version, int versionCode, String whatsNew, ArrayList<String> screenshots, String updatedOn, String size, String compatibleWith, String description, String icon)
+	public App(String name, String oneLineDescription, String packageName, String version, int versionCode, String whatsNew, ArrayList<String> screenshots, String updatedOn, String size, String compatibleWith, String description, String icon, boolean isOpenable)
 	{
 		this.name = name;
 		this.oneLineDescription = oneLineDescription;
@@ -32,6 +33,7 @@ public class App implements Serializable {
 		this.compatibleWith = compatibleWith;
 		this.description = description;
 		this.icon = icon;
+		this.isOpenable = isOpenable;
 	}
 	
 	public App() {}
@@ -148,5 +150,13 @@ public class App implements Serializable {
 
 	public void setIcon(String icon) {
 		this.icon = icon;
+	}
+
+	public boolean isOpenable() {
+		return isOpenable;
+	}
+
+	public void setIsOpenable(boolean isOpenable) {
+		this.isOpenable = isOpenable;
 	}
 }

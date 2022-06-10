@@ -8,4 +8,7 @@
     <string name="updated_on">Updated On</string>
     <string name="what_s_new">What\'s New</string>
     <string name="screenshot">Screenshot</string>
+    <string name="uninstall">Uninstall</string>
+    <string name="update">Update</string>
+    <string name="open">Open</string>
 </resources>
