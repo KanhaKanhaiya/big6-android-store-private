@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.recyclerview.widget.LinearLayoutManager
+import ml.test7777.big6.appstore.adapters.ScreenshotsAdapter
 import ml.test7777.big6.appstore.custom.App
 import ml.test7777.big6.appstore.databinding.ActivityAppDetailsBinding
 
@@ -30,20 +32,28 @@ class AppDetailsActivity : AppCompatActivity() {
         binding.appDetailsUpdatedOnTextView.text = app.updatedOn
         binding.appDetailsVersionTextView.text = app.version
         binding.appDetailsWhatsNewTextView.text = app.whatsNew
-        binding.installButton.text = if (isAppAlreadyInstalled(app)) "Update" else "Install"
+        binding.installButton.text = installButtonText(app)
+
+        val adapter = ScreenshotsAdapter(app.screenshots, this)
+
+        binding.appDetailsScreenshotRecyclerView.adapter = adapter
+        binding.appDetailsScreenshotRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.appDetailsScreenshotRecyclerView.setHasFixedSize(true)
     }
 
-    private fun isAppAlreadyInstalled(app: App) : Boolean {
+    private fun installButtonText(app: App) : String {
         val packageManager = this.packageManager
         val intent = Intent(Intent.ACTION_VIEW)
         if (intent.resolveActivity(packageManager) != null) {
             try {
-                packageManager.getPackageInfo(app.packageName, PackageManager.GET_ACTIVITIES)
-                return true
-            } catch (e: PackageManager.NameNotFoundException) {
-
-            }
+                val appInfo = packageManager.getPackageInfo(app.packageName, PackageManager.GET_ACTIVITIES)
+                return if (appInfo.versionName === app.version) {
+                    "Open"
+                } else {
+                    "Update"
+                }
+            } catch (e: PackageManager.NameNotFoundException) {}
         }
-        return false
+        return "Install"
     }
 }
