@@ -32,7 +32,7 @@ jobs:
     - name: Putting data in google-services.json
       env:
         DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
-      run: echo $DATA > /home/runner/work/big6-android-app-store/big6-android-app-store/app/google-services.json
+      run: echo $DATA > /home/runner/work/big6-android-app-store-private/big6-android-app-store-private/app/google-services.json
 
     - name: Build with Gradle
       run: ./gradlew build
