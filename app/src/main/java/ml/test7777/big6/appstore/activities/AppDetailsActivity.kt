@@ -2,7 +2,7 @@ package ml.test7777.big6.appstore.activities
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.DialogInterface
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -13,6 +13,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.firebase.ktx.Firebase
@@ -137,8 +138,22 @@ class AppDetailsActivity : AppCompatActivity() {
                 val progressBar: LinearProgressIndicator = findViewById(R.id.installProgressIndicator)
                 progressBar.progress = (it.bytesTransferred / it.totalByteCount).toInt() * 100
 
-            }.addOnFailureListener {
+                if (progressBar.progress == 100) {
+                    if (localFile.exists()) {
+                        val intent = Intent(Intent.ACTION_VIEW)
+                        intent.setDataAndType(localFile.toUri(), "application/vnd.android.package-archive")
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        try {
+                            applicationContext.startActivity(intent)
+                        } catch (e: ActivityNotFoundException) {
+                            //File not found
+                        }
+                    }
+                }
 
+            }.addOnFailureListener {
+                //Handle Exception
             }
         }
     }

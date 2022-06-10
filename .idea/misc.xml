@@ -7,6 +7,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.13645833333333332" />
         <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.12182971014492754" />
         <entry key="app/src/main/res/layout/applist.xml" value="0.21" />
+        <entry key="app/src/main/res/layout/install_progress.xml" value="0.33" />
         <entry key="app/src/main/res/layout/screenshot.xml" value="0.1" />
       </map>
     </option>
