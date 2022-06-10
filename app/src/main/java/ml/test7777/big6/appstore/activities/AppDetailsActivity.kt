@@ -1,10 +1,16 @@
 package ml.test7777.big6.appstore.activities
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import ml.test7777.big6.appstore.R
 import ml.test7777.big6.appstore.adapters.ScreenshotsAdapter
@@ -15,6 +21,8 @@ import ml.test7777.big6.appstore.databinding.ActivityAppDetailsBinding
 private lateinit var binding: ActivityAppDetailsBinding
 private lateinit var app: App
 
+private lateinit var appInstallPermissionResultLauncher: ActivityResultLauncher<Intent>
+
 class AppDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +30,12 @@ class AppDetailsActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
+        appInstallPermissionResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                val data = it.data
+
+            }
+        }
         app = intent.getSerializableExtra("APP") as App
 
         setUpLayout()
@@ -49,7 +63,7 @@ class AppDetailsActivity : AppCompatActivity() {
 
     private fun installButtonClicked() {
         if (binding.installButton.text === getString(R.string.install) || binding.installButton.text === getString(R.string.update)) {
-            TODO()
+            installApp()
         } else if (binding.installButton.text === getString(R.string.open)) {
             val openAppIntent = packageManager.getLaunchIntentForPackage(app.packageName)
             if (openAppIntent !== null) {
@@ -57,6 +71,15 @@ class AppDetailsActivity : AppCompatActivity() {
             } else binding.installButton.text = getString(R.string.install)
         } else if (binding.installButton.text === getString(R.string.uninstall)) {
             TODO()
+        }
+    }
+
+    private fun installApp() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (!packageManager.canRequestPackageInstalls()) {
+                val intent = Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES)
+                intent.data = Uri.parse("package:$packageName")
+            }
         }
     }
 
