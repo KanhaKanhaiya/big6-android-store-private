@@ -41,4 +41,4 @@ jobs:
       env: 
         BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
         BROWSERSTACK_API_KEY: ${{ secrets.BROWSERSTACK_API_KEY }}
-      run: curl -u "$BROWSERSTACK_USERNAME:$BROWSERSTACK_API_KEY" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=app/build/outputs/apk/debug/app-debug.apk"
+      run: curl -u $BROWSERSTACK_USERNAME":"$BROWSERSTACK_API_KEY -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@/home/runner/work/big6-android-app-store-private/big6-android-app-store-private/app/build/outputs/apk/debug/app-debug.apk"
