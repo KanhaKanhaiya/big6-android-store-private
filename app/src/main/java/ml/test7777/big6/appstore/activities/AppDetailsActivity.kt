@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.provider.Settings
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -18,6 +19,7 @@ import ml.test7777.big6.appstore.R
 import ml.test7777.big6.appstore.adapters.ScreenshotsAdapter
 import ml.test7777.big6.appstore.custom.App
 import ml.test7777.big6.appstore.databinding.ActivityAppDetailsBinding
+import java.io.File
 
 @SuppressLint("StaticFieldLeak")
 private lateinit var binding: ActivityAppDetailsBinding
@@ -96,7 +98,20 @@ class AppDetailsActivity : AppCompatActivity() {
 
     private fun installApp() {
         val storageRef = storage.reference
-        val pathReference = storageRef
+        val pathReference = storageRef.child("apks/${app.packageName}")
+
+        val localFolder = File(filesDir, "apks")
+
+        if (!localFolder.exists()) {
+            localFolder.mkdirs()
+        } else {
+            val localFile = File(localFolder, "${app.packageName}.apk")
+            pathReference.getFile(localFile).addOnSuccessListener {
+
+            }.addOnFailureListener {
+
+            }
+        }
     }
 
     private fun installButtonText() : String {
