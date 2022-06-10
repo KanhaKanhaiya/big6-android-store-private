@@ -11,4 +11,6 @@
     <string name="uninstall">Uninstall</string>
     <string name="update">Update</string>
     <string name="open">Open</string>
+    <string name="downloading">Downloading</string>
+    <string name="cancel">Cancel</string>
 </resources>

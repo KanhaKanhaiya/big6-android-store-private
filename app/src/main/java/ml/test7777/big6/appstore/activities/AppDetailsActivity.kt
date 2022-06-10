@@ -2,17 +2,19 @@ package ml.test7777.big6.appstore.activities
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Environment
 import android.provider.Settings
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import ml.test7777.big6.appstore.R
@@ -76,7 +78,7 @@ class AppDetailsActivity : AppCompatActivity() {
                 startActivity(openAppIntent)
             } else binding.installButton.text = getString(R.string.install)
         } else if (binding.installButton.text === getString(R.string.uninstall)) {
-            TODO()
+            // Handle Uninstall
         }
     }
 
@@ -96,6 +98,7 @@ class AppDetailsActivity : AppCompatActivity() {
         } else checkInstallPermission()
     }
 
+    @SuppressLint("InflateParams")
     private fun installApp() {
         val storageRef = storage.reference
         val pathReference = storageRef.child("apks/${app.packageName}")
@@ -106,7 +109,33 @@ class AppDetailsActivity : AppCompatActivity() {
             localFolder.mkdirs()
         } else {
             val localFile = File(localFolder, "${app.packageName}.apk")
-            pathReference.getFile(localFile).addOnSuccessListener {
+            val task = pathReference.getFile(localFile)
+
+            task.addOnSuccessListener {
+                val builder: AlertDialog.Builder = this.let {
+                    AlertDialog.Builder(it)
+                }
+
+                builder.setTitle(R.string.downloading)
+
+                val inflater = this.layoutInflater
+
+                builder.setView(inflater.inflate(R.layout.install_progress, null))
+
+                builder.apply {
+                    setNegativeButton(R.string.cancel
+                    ) { dialog, _ ->
+                        task.cancel()
+                        dialog.dismiss()
+                    }
+                }
+
+                builder.setCancelable(false)
+
+                builder.show()
+
+                val progressBar: LinearProgressIndicator = findViewById(R.id.installProgressIndicator)
+                progressBar.progress = (it.bytesTransferred / it.totalByteCount).toInt() * 100
 
             }.addOnFailureListener {
 
