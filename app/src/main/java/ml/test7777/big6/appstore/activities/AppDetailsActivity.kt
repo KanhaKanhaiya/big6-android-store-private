@@ -12,6 +12,8 @@ import android.provider.Settings
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import ml.test7777.big6.appstore.R
 import ml.test7777.big6.appstore.adapters.ScreenshotsAdapter
 import ml.test7777.big6.appstore.custom.App
@@ -20,6 +22,8 @@ import ml.test7777.big6.appstore.databinding.ActivityAppDetailsBinding
 @SuppressLint("StaticFieldLeak")
 private lateinit var binding: ActivityAppDetailsBinding
 private lateinit var app: App
+
+val storage = Firebase.storage
 
 private lateinit var appInstallPermissionResultLauncher: ActivityResultLauncher<Intent>
 
@@ -30,10 +34,10 @@ class AppDetailsActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
+
         appInstallPermissionResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
-                val data = it.data
-
+                recheckInstallAppPermission(false)
             }
         }
         app = intent.getSerializableExtra("APP") as App
@@ -63,7 +67,7 @@ class AppDetailsActivity : AppCompatActivity() {
 
     private fun installButtonClicked() {
         if (binding.installButton.text === getString(R.string.install) || binding.installButton.text === getString(R.string.update)) {
-            installApp()
+            checkInstallPermission()
         } else if (binding.installButton.text === getString(R.string.open)) {
             val openAppIntent = packageManager.getLaunchIntentForPackage(app.packageName)
             if (openAppIntent !== null) {
@@ -74,13 +78,25 @@ class AppDetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun installApp() {
+    private fun checkInstallPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (!packageManager.canRequestPackageInstalls()) {
                 val intent = Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES)
                 intent.data = Uri.parse("package:$packageName")
-            }
+                appInstallPermissionResultLauncher.launch(intent)
+            } else recheckInstallAppPermission(true)
         }
+    }
+
+    private fun recheckInstallAppPermission(isPermissionGranted: Boolean) {
+        if (isPermissionGranted) {
+            installApp()
+        } else checkInstallPermission()
+    }
+
+    private fun installApp() {
+        val storageRef = storage.reference
+        val pathReference = storageRef
     }
 
     private fun installButtonText() : String {
