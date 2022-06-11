@@ -177,6 +177,7 @@ class AppDetailsActivity : AppCompatActivity() {
                             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                             try {
                                 applicationContext.startActivity(intent)
+                                TODO("Use appInstallResultLauncher")
                             } catch (e: ActivityNotFoundException) {
                                 Toast.makeText(this, "APK File Not Found", Toast.LENGTH_LONG).show()
                                 TODO("Show a better error message and log to Crashlytics")
