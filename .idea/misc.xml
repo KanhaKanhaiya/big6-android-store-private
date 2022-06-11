@@ -9,6 +9,7 @@
         <entry key="app/src/main/res/layout/applist.xml" value="0.21" />
         <entry key="app/src/main/res/layout/install_progress.xml" value="0.33" />
         <entry key="app/src/main/res/layout/screenshot.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/uninstalling_dialog.xml" value="0.22" />
       </map>
     </option>
   </component>

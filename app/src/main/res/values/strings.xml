@@ -13,4 +13,6 @@
     <string name="open">Open</string>
     <string name="downloading">Downloading</string>
     <string name="cancel">Cancel</string>
+    <string name="uninstalling">Uninstalling</string>
+    <string name="installing">Installing</string>
 </resources>

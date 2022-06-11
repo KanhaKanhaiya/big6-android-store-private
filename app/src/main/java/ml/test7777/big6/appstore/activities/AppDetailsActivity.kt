@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -17,6 +18,7 @@ import androidx.core.net.toUri
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FileDownloadTask
 import com.google.firebase.storage.ktx.storage
 import ml.test7777.big6.appstore.R
 import ml.test7777.big6.appstore.adapters.ScreenshotsAdapter
@@ -28,9 +30,14 @@ import java.io.File
 private lateinit var binding: ActivityAppDetailsBinding
 private lateinit var app: App
 
+private var downloadAndInstallAlertDialog: AlertDialog? = null
+private var uninstallAlertDialog: AlertDialog? = null
+
 val storage = Firebase.storage
 
 private lateinit var appInstallPermissionResultLauncher: ActivityResultLauncher<Intent>
+private lateinit var appUninstallResultLauncher: ActivityResultLauncher<Intent>
+private lateinit var appInstallResultLauncher: ActivityResultLauncher<Intent>
 
 class AppDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,12 +46,24 @@ class AppDetailsActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-
         appInstallPermissionResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
                 recheckInstallAppPermission(false)
-            }
+            } else TODO("Log and show error")
         }
+
+        appUninstallResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                showOrHideAppUninstallDialog()
+            } else TODO("Log and show error")
+        }
+
+        appInstallResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                showOrHideInstallDialog(null)
+            } else TODO("Log and show error")
+        }
+
         app = intent.getSerializableExtra("APP") as App
 
         setUpLayout()
@@ -71,15 +90,41 @@ class AppDetailsActivity : AppCompatActivity() {
     }
 
     private fun installButtonClicked() {
-        if (binding.installButton.text === getString(R.string.install) || binding.installButton.text === getString(R.string.update)) {
+        if (binding.installButton.text == getString(R.string.install) || binding.installButton.text === getString(R.string.update)) {
             checkInstallPermission()
-        } else if (binding.installButton.text === getString(R.string.open)) {
+        } else if (binding.installButton.text == getString(R.string.open)) {
             val openAppIntent = packageManager.getLaunchIntentForPackage(app.packageName)
             if (openAppIntent !== null) {
                 startActivity(openAppIntent)
             } else binding.installButton.text = getString(R.string.install)
-        } else if (binding.installButton.text === getString(R.string.uninstall)) {
-            // Handle Uninstall
+        } else if (binding.installButton.text == getString(R.string.uninstall)) {
+            val uri = Uri.fromParts("package", app.packageName, null)
+            val uninstallAppIntent = Intent(Intent.ACTION_DELETE, uri)
+            appUninstallResultLauncher.launch(uninstallAppIntent)
+        }
+    }
+
+    @SuppressLint("InflateParams")
+    private fun showOrHideAppUninstallDialog() {
+        if (uninstallAlertDialog == null) {
+            val builder: AlertDialog.Builder = this.let {
+                AlertDialog.Builder(it)
+            }
+
+            builder.setTitle(R.string.uninstalling)
+
+            val inflater = this.layoutInflater
+
+            builder.setView(inflater.inflate(R.layout.installing_uninstalling_dialog, null))
+
+            builder.setCancelable(false)
+
+            uninstallAlertDialog = builder.show()
+        } else {
+            uninstallAlertDialog!!.hide()
+            uninstallAlertDialog = null
+
+            binding.installButton.text = getString(R.string.install)
         }
     }
 
@@ -113,49 +158,71 @@ class AppDetailsActivity : AppCompatActivity() {
             val task = pathReference.getFile(localFile)
 
             task.addOnSuccessListener {
-                val builder: AlertDialog.Builder = this.let {
-                    AlertDialog.Builder(it)
+
+                val alertDialog = showOrHideInstallDialog(task)
+
+                val progressBar: LinearProgressIndicator? = alertDialog?.findViewById(R.id.installProgressIndicator)
+                if (progressBar != null) {
+                    progressBar.progress = (it.bytesTransferred / it.totalByteCount).toInt() * 100
                 }
 
-                builder.setTitle(R.string.downloading)
-
-                val inflater = this.layoutInflater
-
-                builder.setView(inflater.inflate(R.layout.install_progress, null))
-
-                builder.apply {
-                    setNegativeButton(R.string.cancel
-                    ) { dialog, _ ->
-                        task.cancel()
-                        dialog.dismiss()
-                    }
-                }
-
-                builder.setCancelable(false)
-
-                builder.show()
-
-                val progressBar: LinearProgressIndicator = findViewById(R.id.installProgressIndicator)
-                progressBar.progress = (it.bytesTransferred / it.totalByteCount).toInt() * 100
-
-                if (progressBar.progress == 100) {
-                    if (localFile.exists()) {
-                        val intent = Intent(Intent.ACTION_VIEW)
-                        intent.setDataAndType(localFile.toUri(), "application/vnd.android.package-archive")
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                        try {
-                            applicationContext.startActivity(intent)
-                        } catch (e: ActivityNotFoundException) {
-                            //File not found
+                if (progressBar != null) {
+                    if (progressBar.progress == 100) {
+                        alertDialog.setTitle(R.string.installing)
+                        alertDialog.setView(layoutInflater.inflate(R.layout.installing_uninstalling_dialog, null))
+                        if (localFile.exists()) {
+                            val intent = Intent(Intent.ACTION_VIEW)
+                            intent.setDataAndType(localFile.toUri(), "application/vnd.android.package-archive")
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                            try {
+                                applicationContext.startActivity(intent)
+                            } catch (e: ActivityNotFoundException) {
+                                Toast.makeText(this, "APK File Not Found", Toast.LENGTH_LONG).show()
+                                TODO("Show a better error message and log to Crashlytics")
+                            }
                         }
                     }
                 }
 
             }.addOnFailureListener {
-                //Handle Exception
+                TODO("Log to Crashlytics")
             }
         }
+    }
+
+    @SuppressLint("InflateParams")
+    private fun showOrHideInstallDialog(task: FileDownloadTask?): AlertDialog? {
+        if (downloadAndInstallAlertDialog == null && task != null) {
+            val builder: AlertDialog.Builder = this.let {
+                AlertDialog.Builder(it)
+            }
+
+            builder.setTitle(R.string.downloading)
+
+            val inflater = this.layoutInflater
+
+            builder.setView(inflater.inflate(R.layout.install_progress, null))
+
+            builder.apply {
+                setNegativeButton(R.string.cancel
+                ) { dialog, _ ->
+                    task.cancel()
+                    dialog.dismiss()
+                }
+            }
+
+            builder.setCancelable(false)
+
+            downloadAndInstallAlertDialog = builder.show()
+
+            return downloadAndInstallAlertDialog
+        } else {
+            downloadAndInstallAlertDialog!!.hide()
+            downloadAndInstallAlertDialog = null
+        }
+
+        return null
     }
 
     private fun installButtonText() : String {
