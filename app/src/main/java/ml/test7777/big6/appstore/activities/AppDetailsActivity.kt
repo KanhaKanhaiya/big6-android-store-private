@@ -176,17 +176,18 @@ class AppDetailsActivity : AppCompatActivity() {
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                             try {
-                                applicationContext.startActivity(intent)
-                                TODO("Use appInstallResultLauncher")
+                                appInstallResultLauncher.launch(intent)
                             } catch (e: ActivityNotFoundException) {
-                                Toast.makeText(this, "APK File Not Found", Toast.LENGTH_LONG).show()
-                                TODO("Show a better error message and log to Crashlytics")
+                                Toast.makeText(this, "File Not Found", Toast.LENGTH_LONG).show()
+                                TODO("Log to Crashlytics")
                             }
                         }
+                        TODO("Validate apk using SHA256")
                     }
                 }
 
             }.addOnFailureListener {
+                Toast.makeText(this, "An Unknown Error Occurred", Toast.LENGTH_LONG).show()
                 TODO("Log to Crashlytics")
             }
         }
@@ -239,7 +240,7 @@ class AppDetailsActivity : AppCompatActivity() {
                 } else {
                     getString(R.string.update)
                 }
-            } catch (e: PackageManager.NameNotFoundException) {}
+            } catch (_: PackageManager.NameNotFoundException) {}
         }
         return getString(R.string.install)
     }
