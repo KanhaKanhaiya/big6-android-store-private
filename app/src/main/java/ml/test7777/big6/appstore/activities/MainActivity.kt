@@ -3,12 +3,18 @@ package ml.test7777.big6.appstore.activities
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import android.widget.Toast
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.ErrorCodes
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
+import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import ml.test7777.big6.appstore.R
 import ml.test7777.big6.appstore.adapters.AppListAdapter
 import ml.test7777.big6.appstore.custom.App
 import ml.test7777.big6.appstore.databinding.ActivityMainBinding
@@ -26,7 +32,67 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        getData()
+        loginAndSignUp()
+    }
+
+    private fun loginAndSignUp() {
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            getData()
+        } else {
+            val signInLauncher = registerForActivityResult(
+                FirebaseAuthUIActivityResultContract()
+            ) { res ->
+                this.onSignInResult(res)
+            }
+
+            val providers = arrayListOf(
+                AuthUI.IdpConfig.GoogleBuilder().build())
+
+            val signInIntent = AuthUI.getInstance()
+                .createSignInIntentBuilder()
+                .setAvailableProviders(providers)
+                .setLogo(R.mipmap.ic_launcher)
+                .setTheme(R.style.Theme_TheBig6ProjectAppStore)
+                .setTosAndPrivacyPolicyUrls(
+                    "https://big6.test7777.ml/android/terms-of-service/",
+                    "https://big6.test7777.ml/android/privacy-policy/"
+                )
+                .build()
+
+            signInLauncher.launch(signInIntent)
+        }
+    }
+
+    private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
+        val response = result.idpResponse
+        if (result.resultCode == RESULT_OK) {
+            val user = FirebaseAuth.getInstance().currentUser
+            if (user != null) {
+                getData()
+            } else {
+                Toast.makeText(this, "Please Login or SignUp", Toast.LENGTH_LONG).show()
+                loginAndSignUp()
+            }
+        } else {
+
+            if (response == null) {
+                Toast.makeText(this, "Please Login or SignUp", Toast.LENGTH_LONG).show()
+                loginAndSignUp()
+            }
+
+            if (response?.error?.errorCode  == ErrorCodes.NO_NETWORK) {
+                Toast.makeText(this, "Please check your internet connection and try again", Toast.LENGTH_LONG).show()
+                loginAndSignUp()
+            }
+
+            if (response?.error?.errorCode  == ErrorCodes.UNKNOWN_ERROR) {
+                Toast.makeText(this, "Unknown error occurred. Please try again.", Toast.LENGTH_LONG).show()
+                loginAndSignUp()
+            }
+
+        }
+
     }
 
     private fun getData() {
