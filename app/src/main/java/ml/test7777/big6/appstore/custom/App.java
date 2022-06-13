@@ -18,8 +18,9 @@ public class App implements Serializable {
 	private String description;
 	private String icon;
 	private boolean isOpenable;
+	private String checksum;
 
-	public App(String name, String oneLineDescription, String packageName, String version, int versionCode, String whatsNew, ArrayList<String> screenshots, String updatedOn, String size, String compatibleWith, String description, String icon, boolean isOpenable)
+	public App(String name, String oneLineDescription, String packageName, String version, int versionCode, String whatsNew, ArrayList<String> screenshots, String updatedOn, String size, String compatibleWith, String description, String icon, boolean isOpenable, String checksum)
 	{
 		this.name = name;
 		this.oneLineDescription = oneLineDescription;
@@ -34,6 +35,7 @@ public class App implements Serializable {
 		this.description = description;
 		this.icon = icon;
 		this.isOpenable = isOpenable;
+		this.checksum = checksum;
 	}
 	
 	public App() {}
@@ -158,5 +160,13 @@ public class App implements Serializable {
 
 	public void setIsOpenable(boolean isOpenable) {
 		this.isOpenable = isOpenable;
+	}
+
+	public String getChecksum() {
+		return checksum;
+	}
+
+	public void setChecksum(String checksum) {
+		this.checksum = checksum;
 	}
 }

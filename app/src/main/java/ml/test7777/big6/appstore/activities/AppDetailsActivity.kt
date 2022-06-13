@@ -17,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.progressindicator.LinearProgressIndicator
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FileDownloadTask
 import com.google.firebase.storage.ktx.storage
@@ -24,10 +26,9 @@ import ml.test7777.big6.appstore.R
 import ml.test7777.big6.appstore.adapters.ScreenshotsAdapter
 import ml.test7777.big6.appstore.custom.App
 import ml.test7777.big6.appstore.databinding.ActivityAppDetailsBinding
-import java.io.File
+import org.apache.commons.codec.digest.DigestUtils
+import java.io.*
 
-@SuppressLint("StaticFieldLeak")
-private lateinit var binding: ActivityAppDetailsBinding
 private lateinit var app: App
 
 private var downloadAndInstallAlertDialog: AlertDialog? = null
@@ -42,34 +43,42 @@ private lateinit var appInstallResultLauncher: ActivityResultLauncher<Intent>
 class AppDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAppDetailsBinding.inflate(layoutInflater)
+        val binding = ActivityAppDetailsBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        val user = Firebase.auth.currentUser
+
+        if (user == null) {
+            startActivity(Intent(this, MainActivity::class.java))
+        } else Firebase.crashlytics.setUserId(user.uid)
 
         appInstallPermissionResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
                 recheckInstallAppPermission(false)
-            } else TODO("Log and show error")
+            } else Toast.makeText(this, "Please grant permission to install apps. Error Code 4", Toast.LENGTH_LONG).show()
+
         }
 
         appUninstallResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
-                showOrHideAppUninstallDialog()
-            } else TODO("Log and show error")
+                showOrHideAppUninstallDialog(binding)
+            } else Toast.makeText(this, "An error occurred. Error Code 5", Toast.LENGTH_LONG).show()
+
         }
 
         appInstallResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
                 showOrHideInstallDialog(null)
-            } else TODO("Log and show error")
+            } else Toast.makeText(this, "An error occurred. Error Code 6", Toast.LENGTH_LONG).show()
         }
 
         app = intent.getSerializableExtra("APP") as App
 
-        setUpLayout()
+        setUpLayout(binding)
     }
 
-    private fun setUpLayout() {
+    private fun setUpLayout(binding: ActivityAppDetailsBinding) {
         binding.appDetailsNameTextView.text = app.name
         binding.appDetailsDescriptionTextView.text = app.description
         binding.appDetailsDownloadSizeTextView.text = app.size
@@ -85,12 +94,12 @@ class AppDetailsActivity : AppCompatActivity() {
         binding.appDetailsScreenshotRecyclerView.setHasFixedSize(true)
 
         binding.installButton.setOnClickListener {
-            installButtonClicked()
+            installButtonClicked(binding)
         }
     }
 
-    private fun installButtonClicked() {
-        if (binding.installButton.text == getString(R.string.install) || binding.installButton.text === getString(R.string.update)) {
+    private fun installButtonClicked(binding: ActivityAppDetailsBinding) {
+        if (binding.installButton.text == getString(R.string.install) || binding.installButton.text == getString(R.string.update)) {
             checkInstallPermission()
         } else if (binding.installButton.text == getString(R.string.open)) {
             val openAppIntent = packageManager.getLaunchIntentForPackage(app.packageName)
@@ -98,6 +107,7 @@ class AppDetailsActivity : AppCompatActivity() {
                 startActivity(openAppIntent)
             } else binding.installButton.text = getString(R.string.install)
         } else if (binding.installButton.text == getString(R.string.uninstall)) {
+            checkInstallPermission()
             val uri = Uri.fromParts("package", app.packageName, null)
             val uninstallAppIntent = Intent(Intent.ACTION_DELETE, uri)
             appUninstallResultLauncher.launch(uninstallAppIntent)
@@ -105,7 +115,7 @@ class AppDetailsActivity : AppCompatActivity() {
     }
 
     @SuppressLint("InflateParams")
-    private fun showOrHideAppUninstallDialog() {
+    private fun showOrHideAppUninstallDialog(binding: ActivityAppDetailsBinding) {
         if (uninstallAlertDialog == null) {
             val builder: AlertDialog.Builder = this.let {
                 AlertDialog.Builder(it)
@@ -171,24 +181,48 @@ class AppDetailsActivity : AppCompatActivity() {
                         alertDialog.setTitle(R.string.installing)
                         alertDialog.setView(layoutInflater.inflate(R.layout.installing_uninstalling_dialog, null))
                         if (localFile.exists()) {
-                            val intent = Intent(Intent.ACTION_VIEW)
-                            intent.setDataAndType(localFile.toUri(), "application/vnd.android.package-archive")
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                             try {
-                                appInstallResultLauncher.launch(intent)
-                            } catch (e: ActivityNotFoundException) {
-                                Toast.makeText(this, "File Not Found", Toast.LENGTH_LONG).show()
-                                TODO("Log to Crashlytics")
+                                val size = localFile.length().toInt()
+                                val array = ByteArray(size)
+                                try {
+                                    val inputStream = BufferedInputStream(FileInputStream(localFile))
+                                    inputStream.read(array, 0, array.size)
+                                    inputStream.close()
+                                } catch (e: FileNotFoundException) {
+                                    Toast.makeText(this, "File Not Found. Error Code 2", Toast.LENGTH_LONG).show()
+                                    Firebase.crashlytics.recordException(e)
+                                } catch (e: IOException) {
+                                    Toast.makeText(this, "An Error Occurred. Error Code 3", Toast.LENGTH_LONG).show()
+                                    Firebase.crashlytics.recordException(e)
+                                }
+
+                                val checksum = DigestUtils.sha512Hex(array).toString()
+
+                                if (app.checksum == checksum) {
+                                    val intent = Intent(Intent.ACTION_VIEW)
+                                    intent.setDataAndType(localFile.toUri(), "application/vnd.android.package-archive")
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                    try {
+                                        appInstallResultLauncher.launch(intent)
+                                    } catch (e: ActivityNotFoundException) {
+                                        Toast.makeText(this, "File Not Found. Error Code 1", Toast.LENGTH_LONG).show()
+                                        Firebase.crashlytics.recordException(e)
+                                    }
+                                } else Toast.makeText(this, "File Verification Error. Error Code 10", Toast.LENGTH_LONG).show()
+
+                            } catch (e: Exception) {
+                                Firebase.crashlytics.recordException(e)
+                                Toast.makeText(this, "File Error. Error Code 9", Toast.LENGTH_LONG).show()
                             }
+
                         }
-                        TODO("Validate apk using SHA256")
                     }
                 }
 
             }.addOnFailureListener {
-                Toast.makeText(this, "An Unknown Error Occurred", Toast.LENGTH_LONG).show()
-                TODO("Log to Crashlytics")
+                Toast.makeText(this, "An Unknown Error Occurred. Error Code 7", Toast.LENGTH_LONG).show()
+                Firebase.crashlytics.recordException(it)
             }
         }
     }

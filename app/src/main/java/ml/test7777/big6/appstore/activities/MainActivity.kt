@@ -1,9 +1,8 @@
 package ml.test7777.big6.appstore.activities
 
-import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.auth.AuthUI
@@ -11,6 +10,8 @@ import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -20,8 +21,6 @@ import ml.test7777.big6.appstore.custom.App
 import ml.test7777.big6.appstore.databinding.ActivityMainBinding
 
 private lateinit var  binding: ActivityMainBinding
-@SuppressLint("StaticFieldLeak")
-private val cloudFirestore = Firebase.firestore
 private lateinit var appsList: MutableList<App>
 
 class MainActivity : AppCompatActivity() {
@@ -31,6 +30,12 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        val user = Firebase.auth.currentUser
+
+        if (user != null) {
+            Firebase.crashlytics.setUserId(user.uid)
+        }
 
         loginAndSignUp()
     }
@@ -87,7 +92,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             if (response?.error?.errorCode  == ErrorCodes.UNKNOWN_ERROR) {
-                Toast.makeText(this, "Unknown error occurred. Please try again.", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Unknown error occurred. Please try again. Error Code 8", Toast.LENGTH_LONG).show()
                 loginAndSignUp()
             }
 
@@ -96,7 +101,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getData() {
-        val collectionRef = cloudFirestore.collection("AppStore")
+        val collectionRef = Firebase.firestore.collection("AppStore")
         collectionRef.get()
             .addOnSuccessListener { result ->
 
