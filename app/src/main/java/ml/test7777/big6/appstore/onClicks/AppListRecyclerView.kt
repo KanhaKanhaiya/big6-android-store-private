@@ -5,7 +5,7 @@ import android.content.Intent
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import ml.test7777.big6.appstore.activities.AppDetailsActivity
-import ml.test7777.big6.appstore.custom.App
+import ml.test7777.big6.appstore.custom.classes.App
 
 class AppListRecyclerView (private val appsList: List<App>, private val recyclerView: RecyclerView, private val context: Context) : View.OnClickListener {
     override fun onClick(p0: View?) {

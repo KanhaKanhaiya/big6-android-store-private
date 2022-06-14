@@ -15,4 +15,5 @@
     <string name="cancel">Cancel</string>
     <string name="uninstalling">Uninstalling</string>
     <string name="installing">Installing</string>
+    <string name="default_notification_channel_id">The big6 Project App Store</string>
 </resources>

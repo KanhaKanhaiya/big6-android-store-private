@@ -24,7 +24,7 @@ import com.google.firebase.storage.FileDownloadTask
 import com.google.firebase.storage.ktx.storage
 import ml.test7777.big6.appstore.R
 import ml.test7777.big6.appstore.adapters.ScreenshotsAdapter
-import ml.test7777.big6.appstore.custom.App
+import ml.test7777.big6.appstore.custom.classes.App
 import ml.test7777.big6.appstore.databinding.ActivityAppDetailsBinding
 import org.apache.commons.codec.digest.DigestUtils
 import java.io.*

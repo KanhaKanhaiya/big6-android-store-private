@@ -20,7 +20,7 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import ml.test7777.big6.appstore.R
 import ml.test7777.big6.appstore.adapters.AppListAdapter
-import ml.test7777.big6.appstore.custom.App
+import ml.test7777.big6.appstore.custom.classes.App
 import ml.test7777.big6.appstore.databinding.ActivityMainBinding
 
 private lateinit var  binding: ActivityMainBinding

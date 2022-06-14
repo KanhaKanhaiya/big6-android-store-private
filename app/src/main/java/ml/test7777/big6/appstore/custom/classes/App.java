@@ -1,4 +1,4 @@
-package ml.test7777.big6.appstore.custom;
+package ml.test7777.big6.appstore.custom.classes;
 
 import java.io.Serializable;
 import java.util.*;
