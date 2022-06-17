@@ -14,13 +14,12 @@ public class App implements Serializable {
 	private ArrayList<String> screenshots;
 	private String updatedOn;
 	private String size;
-	private String compatibleWith;
 	private String description;
 	private String icon;
 	private boolean isOpenable;
 	private String checksum;
 
-	public App(String name, String oneLineDescription, String packageName, String version, int versionCode, String whatsNew, ArrayList<String> screenshots, String updatedOn, String size, String compatibleWith, String description, String icon, boolean isOpenable, String checksum)
+	public App(String name, String oneLineDescription, String packageName, String version, int versionCode, String whatsNew, ArrayList<String> screenshots, String updatedOn, String size, String description, String icon, boolean isOpenable, String checksum)
 	{
 		this.name = name;
 		this.oneLineDescription = oneLineDescription;
@@ -31,7 +30,6 @@ public class App implements Serializable {
 		this.screenshots = screenshots;
 		this.updatedOn = updatedOn;
 		this.size = size;
-		this.compatibleWith = compatibleWith;
 		this.description = description;
 		this.icon = icon;
 		this.isOpenable = isOpenable;
@@ -128,14 +126,6 @@ public class App implements Serializable {
 	public String getSize()
 	{
 		return size;
-	}
-
-	public String getCompatibleWith() {
-		return compatibleWith;
-	}
-
-	public void setCompatibleWith(String compatibleWith) {
-		this.compatibleWith = compatibleWith;
 	}
 
 	public String getDescription() {
