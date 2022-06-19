@@ -16,15 +16,20 @@ class SettingsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            TheBig6ProjectAppStoreTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
-            }
+            SettingsLayout()
+        }
+    }
+}
+
+@Composable
+fun SettingsLayout() {
+    TheBig6ProjectAppStoreTheme {
+        // A surface container using the 'background' color from the theme
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            Greeting("Android")
         }
     }
 }
@@ -37,7 +42,5 @@ fun Greeting(name: String) {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    TheBig6ProjectAppStoreTheme {
-        Greeting("Android")
-    }
+    SettingsLayout()
 }
