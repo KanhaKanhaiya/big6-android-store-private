@@ -98,4 +98,7 @@ dependencies {
 
     //Apache
     implementation 'commons-codec:commons-codec:1.15'
+
+    //Custom
+    implementation 'com.cuberto:liquid-swipe:1.0.0'
 }

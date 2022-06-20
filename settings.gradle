@@ -5,6 +5,10 @@ pluginManagement {
         mavenCentral()
     }
 }
+
+def githubProperties = new Properties()
+githubProperties.load(new FileInputStream(file("github.properties")))
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -12,6 +16,15 @@ dependencyResolutionManagement {
         mavenCentral()
         maven {
             url "https://androidx.dev/storage/compose-compiler/repository/"
+        }
+        maven {
+            name = "GitHubPackages"
+
+            url = uri("https://maven.pkg.github.com/Cuberto/liquid-swipe-android")
+            credentials {
+                username = githubProperties['gpr.usr'] ?: System.getenv("GPR_USER")
+                password = githubProperties['gpr.key'] ?: System.getenv("GPR_API_KEY")
+            }
         }
     }
 }
