@@ -17,15 +17,7 @@ dependencyResolutionManagement {
         maven {
             url "https://androidx.dev/storage/compose-compiler/repository/"
         }
-        maven {
-            name = "GitHubPackages"
-
-            url = uri("https://maven.pkg.github.com/Cuberto/liquid-swipe-android")
-            credentials {
-                username = githubProperties['gpr.usr'] ?: System.getenv("GPR_USER")
-                password = githubProperties['gpr.key'] ?: System.getenv("GPR_API_KEY")
-            }
-        }
+        maven { url 'https://jitpack.io' }
     }
 }
 rootProject.name = "The big6 Project App Store"
