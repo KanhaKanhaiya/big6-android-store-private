@@ -57,14 +57,12 @@ class AppDetailsActivity : AppCompatActivity() {
             if (it.resultCode == Activity.RESULT_OK) {
                 recheckInstallAppPermission(false)
             } else Toast.makeText(this, "Please grant permission to install apps. Error Code 4", Toast.LENGTH_LONG).show()
-
         }
 
         appUninstallResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
                 showOrHideAppUninstallDialog(binding)
             } else Toast.makeText(this, "An error occurred. Error Code 5", Toast.LENGTH_LONG).show()
-
         }
 
         appInstallResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
