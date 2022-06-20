@@ -17,4 +17,7 @@
     <string name="installing">Installing</string>
     <string name="default_notification_channel_id">The big6 Project App Store</string>
     <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_account">AccountActivity</string>
+    <string name="title_activity_help">HelpActivity</string>
+    <string name="title_activity_app_info">AppInfoActivity</string>
 </resources>
