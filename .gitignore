@@ -15,6 +15,7 @@
 local.properties
 
 #Manually Added
+github.properties
 
 # Gradle files
 .gradle/
