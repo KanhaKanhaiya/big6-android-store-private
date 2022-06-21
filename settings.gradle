@@ -5,10 +5,6 @@ pluginManagement {
         mavenCentral()
     }
 }
-
-def githubProperties = new Properties()
-githubProperties.load(new FileInputStream(file("github.properties")))
-
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
