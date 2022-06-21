@@ -26,7 +26,7 @@ import ml.test7777.big6.appstore.adapters.AppListAdapter
 import ml.test7777.big6.appstore.custom.classes.App
 import ml.test7777.big6.appstore.databinding.ActivityMainBinding
 
-private lateinit var  binding: ActivityMainBinding
+private lateinit var binding: ActivityMainBinding
 private lateinit var appsList: MutableList<App>
 
 class MainActivity : AppCompatActivity() {

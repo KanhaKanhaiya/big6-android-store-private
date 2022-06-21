@@ -20,25 +20,20 @@
         android:theme="@style/Theme.TheBig6ProjectSplashScreen"
         tools:targetApi="31">
         <activity
+            android:name=".activities.HelpActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.AppInfoActivity"
             android:exported="false"
-            android:label="@string/title_activity_app_info"
-            android:theme="@style/Theme.TheBig6ProjectSplashScreen" />
-        <activity
-            android:name=".activities.HelpActivity"
-            android:exported="false"
-            android:label="@string/title_activity_help"
-            android:theme="@style/Theme.TheBig6ProjectSplashScreen" />
+            android:label="@string/title_activity_app_info" />
         <activity
             android:name=".activities.AccountActivity"
             android:exported="false"
-            android:label="@string/title_activity_account"
-            android:theme="@style/Theme.TheBig6ProjectSplashScreen" />
+            android:label="@string/title_activity_account" />
         <activity
             android:name=".activities.SettingsActivity"
             android:exported="false"
-            android:label="@string/title_activity_settings"
-            android:theme="@style/Theme.TheBig6ProjectSplashScreen" />
+            android:label="@string/title_activity_settings" />
         <activity
             android:name=".activities.AppDetailsActivity"
             android:exported="false" />

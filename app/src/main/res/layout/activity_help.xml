@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="activity"
+            type="ml.test7777.big6.appstore.activities.HelpActivity" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activities.HelpActivity">
+
+        <Button
+            android:id="@+id/FAQButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/faqs"
+            android:layout_margin="5dp"
+            android:backgroundTint="#FFFFFF"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:drawableStart="@drawable/baseline_help_outline_24"
+            app:drawableTint="?colorAccent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:onClick="@{activity::onButtonClick}" />
+
+        <Button
+            android:id="@+id/ContactButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:backgroundTint="#FFFFFF"
+            android:drawableStart="@drawable/baseline_contact_support_24"
+            android:onClick="@{activity::onButtonClick}"
+            android:text="@string/contact_us"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:drawableTint="?colorAccent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/FAQButton" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
