@@ -48,7 +48,22 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/FAQButton" />
 
-
+        <Button
+            android:id="@+id/TermsAndPrivacyPolicyButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:backgroundTint="#FFFFFF"
+            android:drawableStart="TODO"
+            android:onClick="@{activity::onButtonClick}"
+            android:text="Terms and Privacy Policy"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:drawableTint="?colorAccent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ContactButton" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
