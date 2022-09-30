@@ -54,7 +54,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:backgroundTint="#FFFFFF"
-            <!--android:drawableStart="TODO"-->
             android:onClick="@{activity::onButtonClick}"
             android:text="Terms and Privacy Policy"
             android:textColor="@color/black"
