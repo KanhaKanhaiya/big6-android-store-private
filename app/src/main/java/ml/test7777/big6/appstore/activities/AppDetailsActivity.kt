@@ -265,7 +265,7 @@ class AppDetailsActivity : AppCompatActivity() {
         if (intent.resolveActivity(packageManager) != null) {
             try {
                 val appInfo = packageManager.getPackageInfo(app.packageName, PackageManager.GET_ACTIVITIES)
-                return if (appInfo.versionName === app.version) {
+                return if (appInfo.versionName == app.version) {
                     if (app.isOpenable) {
                         getString(R.string.open)
                     } else getString(R.string.uninstall)
