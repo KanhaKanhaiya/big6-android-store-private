@@ -101,5 +101,5 @@ dependencies {
     implementation 'commons-codec:commons-codec:1.15'
 
     //Custom
-    implementation 'com.github.Udhayarajan:liquid-swipe-android:1.0.1'
+    // implementation 'com.github.Udhayarajan:liquid-swipe-android:1.0.1'
 }
