@@ -49,9 +49,9 @@ class AppDetailsActivity : AppCompatActivity() {
 
         val user = Firebase.auth.currentUser
 
-        if (user == null) {
+        /* if (user == null) {
             startActivity(Intent(this, MainActivity::class.java))
-        } else Firebase.crashlytics.setUserId(user.uid)
+        } else Firebase.crashlytics.setUserId(user.uid) */
 
         appInstallPermissionResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
