@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
             Firebase.crashlytics.setUserId(user.uid)
         }
 
-        loginAndSignUp()
+        // loginAndSignUp()
     }
 
     private fun loginAndSignUp() {
