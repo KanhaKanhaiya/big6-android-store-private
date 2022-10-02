@@ -19,7 +19,7 @@ import ml.test7777.big6.appstore.activities.MainActivity
 class FirebaseCloudMessagingNotificationService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
-        TODO("Store Token")
+        // TODO("Store Token")
     }
 
     @SuppressLint("UnspecifiedImmutableFlag")
