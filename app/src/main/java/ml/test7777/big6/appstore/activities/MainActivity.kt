@@ -49,6 +49,7 @@ class MainActivity : AppCompatActivity() {
             Firebase.crashlytics.setUserId(user.uid)
         }
 
+        getData()
         // loginAndSignUp()
     }
 
@@ -120,7 +121,7 @@ class MainActivity : AppCompatActivity() {
                 appsList = ArrayList()
 
                 for (document in result) {
-                    appsList.add(document.toObject(App::class.java))
+                    appsList.add(document.toObject())
                 }
 
                 val adapter = AppListAdapter(appsList, this, binding.appsListRecyclerView)
