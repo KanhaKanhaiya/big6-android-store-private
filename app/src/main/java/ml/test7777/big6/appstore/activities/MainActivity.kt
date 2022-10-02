@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity() {
                 appsList = ArrayList()
 
                 for (document in result) {
-                    appsList.add(document.toObject())
+                    appsList.add(document.toObject(App::class.java))
                 }
 
                 val adapter = AppListAdapter(appsList, this, binding.appsListRecyclerView)
