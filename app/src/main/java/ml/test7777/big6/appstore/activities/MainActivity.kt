@@ -126,9 +126,9 @@ class MainActivity : AppCompatActivity() {
 
                 val adapter = AppListAdapter(appsList, this, binding.appsListRecyclerView)
 
-                binding.appsListRecyclerView.adapter = adapter
                 binding.appsListRecyclerView.layoutManager = LinearLayoutManager(this)
                 binding.appsListRecyclerView.setHasFixedSize(true)
+                binding.appsListRecyclerView.adapter = adapter
             }
     }
 
