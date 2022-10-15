@@ -13,6 +13,6 @@ class AppListRecyclerView (private val appsList: List<App>, private val recycler
         val app = appsList[itemPosition]
         val intent = Intent(context, AppDetailsActivity::class.java)
         intent.putExtra("APP", app)
-        startActivity(intent)
+        context.startActivity(intent)
     }
 }
