@@ -12,7 +12,7 @@ import ml.test7777.big6.appstore.R
 import ml.test7777.big6.appstore.custom.classes.App
 import ml.test7777.big6.appstore.onClicks.AppListRecyclerView
 
-class AppListAdapter (private val appList: List<App>, private val context: Context, private val recyclerView: RecyclerView) : RecyclerView.Adapter<AppListAdapter.ViewHolder?>() {
+class AppListAdapter (private val appList: List<App>, private val activityContext: Context, private val recyclerView: RecyclerView) : RecyclerView.Adapter<AppListAdapter.ViewHolder?>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val appIconImageView: ImageView = itemView.findViewById(R.id.appIconImageView)
@@ -25,7 +25,7 @@ class AppListAdapter (private val appList: List<App>, private val context: Conte
         val context = parent.context
         val inflater = LayoutInflater.from(context)
         val appListView = inflater.inflate(R.layout.applist, parent, false)
-        appListView.setOnClickListener(AppListRecyclerView(appList, recyclerView, context))
+        appListView.setOnClickListener(AppListRecyclerView(appList, recyclerView, activityContext))
         return ViewHolder(appListView)
     }
 
@@ -38,7 +38,7 @@ class AppListAdapter (private val appList: List<App>, private val context: Conte
         val appSizeTextView = holder.appSizeTextView
 
         Glide
-            .with(context)
+            .with(activityContext)
             .load(app.icon)
             .into(appIconImageView)
 
