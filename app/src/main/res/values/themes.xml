@@ -14,7 +14,7 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="Theme.TheBig6ProjectSplashScreen" parent="Theme.SplashScreen">
+    <style name="TheBig6ProjectSplashScreenTheme" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">?attr/colorSecondary</item>
         <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
         <item name="windowSplashScreenAnimationDuration">400</item>
