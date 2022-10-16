@@ -16,8 +16,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.TheBig6ProjectSplashScreen"
-        tools:targetApi="31">
+        android:theme="@style/TheBig6ProjectSplashScreenTheme"
+        tools:targetApi="33">
         <activity
             android:name=".activities.HelpActivity"
             android:exported="false" />
