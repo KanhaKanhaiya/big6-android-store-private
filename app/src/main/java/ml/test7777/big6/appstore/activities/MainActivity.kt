@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
                 .setLogo(R.mipmap.ic_launcher)
-                .setTheme(R.style.Theme_TheBig6ProjectAppStore)
+                .setTheme(R.style.TheBig6ProjectAppStoreTheme)
                 .setTosAndPrivacyPolicyUrls(
                     "https://big6.test7777.ml/android/terms-of-service/",
                     "https://big6.test7777.ml/android/privacy-policy/"
