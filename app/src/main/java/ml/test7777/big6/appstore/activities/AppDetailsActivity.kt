@@ -43,6 +43,7 @@ private lateinit var appInstallResultLauncher: ActivityResultLauncher<Intent>
 class AppDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(R.style.Thebig6ProjectAppStoreTheme)
         val binding = ActivityAppDetailsBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
