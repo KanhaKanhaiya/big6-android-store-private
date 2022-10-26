@@ -156,7 +156,7 @@ class AppDetailsActivity : AppCompatActivity() {
     @SuppressLint("InflateParams")
     private fun installApp() {
         val storageRef = storage.reference
-        val pathReference = storageRef.child("apks/${app.packageName}")
+        val pathReference = storageRef.child("apks/${app.packageName}.apk")
 
         val localFolder = File(filesDir, "apks")
 
