@@ -106,7 +106,7 @@ class AppDetailsActivity : AppCompatActivity() {
                 startActivity(openAppIntent)
             } else binding.installButton.text = getString(R.string.install)
         } else if (binding.installButton.text == getString(R.string.uninstall)) {
-            checkInstallPermission()
+    
             val uri = Uri.fromParts("package", app.packageName, null)
             val uninstallAppIntent = Intent(Intent.ACTION_DELETE, uri)
             appUninstallResultLauncher.launch(uninstallAppIntent)
