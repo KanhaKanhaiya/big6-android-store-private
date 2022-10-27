@@ -162,68 +162,69 @@ class AppDetailsActivity : AppCompatActivity() {
 
         if (!localFolder.exists()) {
             localFolder.mkdirs()
-        } else {
-            val localFile = File(localFolder, "${app.packageName}.apk")
-            val task = pathReference.getFile(localFile)
+        }
+        
+        val localFile = File(localFolder, "${app.packageName}.apk")
+        val task = pathReference.getFile(localFile)
 
-            task.addOnSuccessListener {
+        task.addOnSuccessListener {
 
-                val alertDialog = showOrHideInstallDialog(task)
+            val alertDialog = showOrHideInstallDialog(task)
 
-                val progressBar: LinearProgressIndicator? = alertDialog?.findViewById(R.id.installProgressIndicator)
-                if (progressBar != null) {
-                    progressBar.progress = (it.bytesTransferred / it.totalByteCount).toInt() * 100
-                }
+            val progressBar: LinearProgressIndicator? = alertDialog?.findViewById(R.id.installProgressIndicator)
+            if (progressBar != null) {
+                progressBar.progress = (it.bytesTransferred / it.totalByteCount).toInt() * 100
+            }
 
-                if (progressBar != null) {
-                    if (progressBar.progress == 100) {
-                        alertDialog.setTitle(R.string.installing)
-                        alertDialog.setView(layoutInflater.inflate(R.layout.installing_uninstalling_dialog, null))
-                        if (localFile.exists()) {
+            if (progressBar != null) {
+                if (progressBar.progress == 100) {
+                    alertDialog.setTitle(R.string.installing)
+                    alertDialog.setView(layoutInflater.inflate(R.layout.installing_uninstalling_dialog, null))
+                    if (localFile.exists()) {
+                        try {
+                            val size = localFile.length().toInt()
+                            val array = ByteArray(size)
                             try {
-                                val size = localFile.length().toInt()
-                                val array = ByteArray(size)
-                                try {
-                                    val inputStream = BufferedInputStream(FileInputStream(localFile))
-                                    inputStream.read(array, 0, array.size)
-                                    inputStream.close()
-                                } catch (e: FileNotFoundException) {
-                                    Toast.makeText(this, "File Not Found. Error Code 2", Toast.LENGTH_LONG).show()
-                                    Firebase.crashlytics.recordException(e)
-                                } catch (e: IOException) {
-                                    Toast.makeText(this, "An Error Occurred. Error Code 3", Toast.LENGTH_LONG).show()
-                                    Firebase.crashlytics.recordException(e)
-                                }
-
-                                val checksum = DigestUtils.sha512Hex(array).toString()
-
-                                if (app.checksum == checksum) {
-                                    val intent = Intent(Intent.ACTION_VIEW)
-                                    intent.setDataAndType(localFile.toUri(), "application/vnd.android.package-archive")
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                                    try {
-                                        appInstallResultLauncher.launch(intent)
-                                    } catch (e: ActivityNotFoundException) {
-                                        Toast.makeText(this, "File Not Found. Error Code 1", Toast.LENGTH_LONG).show()
-                                        Firebase.crashlytics.recordException(e)
-                                    }
-                                } else Toast.makeText(this, "File Verification Error. Error Code 10", Toast.LENGTH_LONG).show()
-
-                            } catch (e: Exception) {
+                                val inputStream = BufferedInputStream(FileInputStream(localFile))
+                                inputStream.read(array, 0, array.size)
+                                inputStream.close()
+                            } catch (e: FileNotFoundException) {
+                                Toast.makeText(this, "File Not Found. Error Code 2", Toast.LENGTH_LONG).show()
                                 Firebase.crashlytics.recordException(e)
-                                Toast.makeText(this, "File Error. Error Code 9", Toast.LENGTH_LONG).show()
+                            } catch (e: IOException) {
+                                Toast.makeText(this, "An Error Occurred. Error Code 3", Toast.LENGTH_LONG).show()
+                                Firebase.crashlytics.recordException(e)
                             }
 
+                            val checksum = DigestUtils.sha512Hex(array).toString()
+
+                            if (app.checksum == checksum) {
+                                val intent = Intent(Intent.ACTION_VIEW)
+                                intent.setDataAndType(localFile.toUri(), "application/vnd.android.package-archive")
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                try {
+                                    appInstallResultLauncher.launch(intent)
+                                } catch (e: ActivityNotFoundException) {
+                                    Toast.makeText(this, "File Not Found. Error Code 1", Toast.LENGTH_LONG).show()
+                                    Firebase.crashlytics.recordException(e)
+                                }
+                            } else Toast.makeText(this, "File Verification Error. Error Code 10", Toast.LENGTH_LONG).show()
+
+                        } catch (e: Exception) {
+                            Firebase.crashlytics.recordException(e)
+                            Toast.makeText(this, "File Error. Error Code 9", Toast.LENGTH_LONG).show()
                         }
+
                     }
                 }
-
-            }.addOnFailureListener {
-                Toast.makeText(this, "An Unknown Error Occurred. Error Code 7", Toast.LENGTH_LONG).show()
-                Firebase.crashlytics.recordException(it)
             }
+
+        }.addOnFailureListener {
+            Toast.makeText(this, "An Unknown Error Occurred. Error Code 7", Toast.LENGTH_LONG).show()
+            Firebase.crashlytics.recordException(it)
         }
+
     }
 
     @SuppressLint("InflateParams")
