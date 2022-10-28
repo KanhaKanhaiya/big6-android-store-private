@@ -181,7 +181,7 @@ class AppDetailsActivity : AppCompatActivity() {
                     alertDialog.setTitle(R.string.installing)
                     alertDialog.setView(layoutInflater.inflate(R.layout.installing_uninstalling_dialog, null)) */ 
                     if (localFile.exists()) {
-                        try {
+                       /* try {
                             val size = localFile.length().toInt()
                             val array = ByteArray(size)
                             try {
@@ -198,7 +198,7 @@ class AppDetailsActivity : AppCompatActivity() {
 
                             val checksum = DigestUtils.sha512Hex(array).toString()
 
-                            if (app.checksum == checksum) {
+                            if (app.checksum == checksum) { */ // Removed for debugging purpose
                                 val intent = Intent(Intent.ACTION_VIEW)
                                 intent.setDataAndType(localFile.toUri(), "application/vnd.android.package-archive")
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -209,12 +209,12 @@ class AppDetailsActivity : AppCompatActivity() {
                                     Toast.makeText(this, "File Not Found. Error Code 1", Toast.LENGTH_LONG).show()
                                     Firebase.crashlytics.recordException(e)
                                 }
-                            } else Toast.makeText(this, "File Verification Error. Error Code 10", Toast.LENGTH_LONG).show()
+                         /*   } else Toast.makeText(this, "File Verification Error. Error Code 10", Toast.LENGTH_LONG).show()
 
                         } catch (e: Exception) {
                             Firebase.crashlytics.recordException(e)
                             Toast.makeText(this, "File Error. Error Code 9", Toast.LENGTH_LONG).show()
-                        }
+                        } */
 
                     }
          //       }
