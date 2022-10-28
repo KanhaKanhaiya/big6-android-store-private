@@ -168,8 +168,8 @@ class AppDetailsActivity : AppCompatActivity() {
         val task = pathReference.getFile(localFile)
 
         task.addOnSuccessListener {
-
-            val alertDialog = showOrHideInstallDialog(task)
+           // Not needed in this block; must be in addOnProgressListener
+           /* val alertDialog = showOrHideInstallDialog(task)
 
             val progressBar: LinearProgressIndicator? = alertDialog?.findViewById(R.id.installProgressIndicator)
             if (progressBar != null) {
@@ -179,7 +179,7 @@ class AppDetailsActivity : AppCompatActivity() {
             if (progressBar != null) {
                 if (progressBar.progress == 100) {
                     alertDialog.setTitle(R.string.installing)
-                    alertDialog.setView(layoutInflater.inflate(R.layout.installing_uninstalling_dialog, null))
+                    alertDialog.setView(layoutInflater.inflate(R.layout.installing_uninstalling_dialog, null)) */ 
                     if (localFile.exists()) {
                         try {
                             val size = localFile.length().toInt()
@@ -217,8 +217,8 @@ class AppDetailsActivity : AppCompatActivity() {
                         }
 
                     }
-                }
-            }
+         //       }
+        //    }
 
         }.addOnFailureListener {
             Toast.makeText(this, "An Unknown Error Occurred. Error Code 7", Toast.LENGTH_LONG).show()
