@@ -21,12 +21,12 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FileDownloadTask
+import com.google.firebase.storage.StorageTask
 import com.google.firebase.storage.ktx.storage
 import ml.test7777.big6.appstore.R
 import ml.test7777.big6.appstore.adapters.ScreenshotsAdapter
 import ml.test7777.big6.appstore.custom.classes.App
 import ml.test7777.big6.appstore.databinding.ActivityAppDetailsBinding
-import org.apache.commons.codec.digest.DigestUtils
 import java.io.*
 
 private lateinit var app: App
@@ -106,7 +106,6 @@ class AppDetailsActivity : AppCompatActivity() {
                 startActivity(openAppIntent)
             } else binding.installButton.text = getString(R.string.install)
         } else if (binding.installButton.text == getString(R.string.uninstall)) {
-    
             val uri = Uri.fromParts("package", app.packageName, null)
             val uninstallAppIntent = Intent(Intent.ACTION_DELETE, uri)
             appUninstallResultLauncher.launch(uninstallAppIntent)
@@ -169,17 +168,13 @@ class AppDetailsActivity : AppCompatActivity() {
 
         task.addOnSuccessListener {
            // Not needed in this block; must be in addOnProgressListener
-           /* val alertDialog = showOrHideInstallDialog(task)
+           /*
 
-            val progressBar: LinearProgressIndicator? = alertDialog?.findViewById(R.id.installProgressIndicator)
-            if (progressBar != null) {
-                progressBar.progress = (it.bytesTransferred / it.totalByteCount).toInt() * 100
-            }
+
 
             if (progressBar != null) {
                 if (progressBar.progress == 100) {
-                    alertDialog.setTitle(R.string.installing)
-                    alertDialog.setView(layoutInflater.inflate(R.layout.installing_uninstalling_dialog, null)) */ 
+                     */
                     if (localFile.exists()) {
                        /* try {
                             val size = localFile.length().toInt()
@@ -223,12 +218,20 @@ class AppDetailsActivity : AppCompatActivity() {
         }.addOnFailureListener {
             Toast.makeText(this, "An Unknown Error Occurred. Error Code 7", Toast.LENGTH_LONG).show()
             Firebase.crashlytics.recordException(it)
+        }.addOnProgressListener {
+            val alertDialog = showOrHideInstallDialog(it.task)
+            val progressBar: LinearProgressIndicator? = alertDialog?.findViewById(R.id.installProgressIndicator)
+            if (progressBar != null) {
+                progressBar.progress = (it.bytesTransferred / it.totalByteCount).toInt() * 100
+                alertDialog.setTitle(R.string.installing)
+                alertDialog.setView(layoutInflater.inflate(R.layout.installing_uninstalling_dialog, null))
+            }
         }
 
     }
 
     @SuppressLint("InflateParams")
-    private fun showOrHideInstallDialog(task: FileDownloadTask?): AlertDialog? {
+    private fun showOrHideInstallDialog(task: StorageTask<FileDownloadTask.TaskSnapshot>?): AlertDialog? {
         if (downloadAndInstallAlertDialog == null && task != null) {
             val builder: AlertDialog.Builder = this.let {
                 AlertDialog.Builder(it)
