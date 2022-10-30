@@ -195,7 +195,7 @@ class AppDetailsActivity : AppCompatActivity() {
 
                             if (app.checksum == checksum) { */ // Removed for debugging purpose
                                 val intent = Intent(Intent.ACTION_VIEW)
-                                intent.setDataAndType(localFile.toUri(), "application/vnd.android.package-archive")
+                                intent.setDataAndType(FileProvider.getUriForFile(this, "ml.test7777.big6.appstore", localFile), "application/vnd.android.package-archive")
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                                 try {
