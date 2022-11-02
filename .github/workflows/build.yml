@@ -38,7 +38,7 @@ jobs:
       run: echo $DATA > /home/runner/work/big6-android-app-store-private/big6-android-app-store-private/app/google-services.json
 
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew assembleDebug
 
     - name: Upload Artifact 
       uses: actions/upload-artifact@v3
