@@ -4,7 +4,7 @@ plugins {
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
     id 'com.google.firebase.firebase-perf'
-    id 'com.google.devtools.ksp' version '1.7.20-1.0.7'
+    id 'com.google.devtools.ksp' version '1.7.20-1.0.8'
 }
 
 android {
@@ -90,7 +90,7 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     implementation 'androidx.core:core-splashscreen:1.0.0'
-    implementation 'com.google.devtools.ksp:symbol-processing-api:1.7.20-1.0.7'
+    implementation 'com.google.devtools.ksp:symbol-processing-api:1.7.20-1.0.8'
 
     //Firebase
     implementation platform('com.google.firebase:firebase-bom:31.0.1')
