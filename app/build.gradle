@@ -11,7 +11,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "ml.test7777.big6.appstore"
+        applicationId "app.web.thebig6.appstore"
         minSdk 21
         targetSdk 33
         versionCode 1
@@ -69,7 +69,7 @@ android {
         }
     }
 
-    namespace 'ml.test7777.big6.appstore'
+    namespace 'app.web.thebig6.appstore'
 }
 
 dependencies {

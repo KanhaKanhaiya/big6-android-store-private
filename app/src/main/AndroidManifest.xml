@@ -56,7 +56,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="ml.test7777.big6.appstore"
+            android:authorities="app.web.thebig6.appstore"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

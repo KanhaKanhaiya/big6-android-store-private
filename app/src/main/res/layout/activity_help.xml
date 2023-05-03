@@ -6,7 +6,7 @@
     <data>
         <variable
             name="activity"
-            type="ml.test7777.big6.appstore.activities.HelpActivity" />
+            type="app.web.thebig6.appstore.activities.HelpActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
