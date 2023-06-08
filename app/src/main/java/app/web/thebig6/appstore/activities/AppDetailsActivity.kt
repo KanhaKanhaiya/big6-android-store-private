@@ -69,7 +69,10 @@ class AppDetailsActivity : AppCompatActivity() {
         appInstallResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
                 showOrHideInstallDialog(null)
-            } else Toast.makeText(this, "An error occurred. Error Code 6", Toast.LENGTH_LONG).show()
+            } else {
+                Firebase.crashlytics.log(it.resultCode.toString())
+                Toast.makeText(this, "An error occurred. Error Code 6", Toast.LENGTH_LONG).show()
+            }
         }
 
         app = intent.getSerializableExtra("APP") as App
