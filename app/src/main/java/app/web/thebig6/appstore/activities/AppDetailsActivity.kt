@@ -165,6 +165,10 @@ class AppDetailsActivity : AppCompatActivity() {
         
         val localFile = File(localFolder, "${app.packageName}.apk")
         val task = pathReference.getFile(localFile)
+        val alertDialog = showOrHideInstallDialog(task)
+        val progressBar: LinearProgressIndicator? = alertDialog?.findViewById(R.id.installProgressIndicator)
+        alertDialog?.setTitle(R.string.installing)
+        alertDialog?.setView(layoutInflater.inflate(R.layout.installing_uninstalling_dialog, null))
 
         task.addOnSuccessListener {
            // Not needed in this block; must be in addOnProgressListener
@@ -219,13 +223,7 @@ class AppDetailsActivity : AppCompatActivity() {
             Toast.makeText(this, "An Unknown Error Occurred. Error Code 7", Toast.LENGTH_LONG).show()
             Firebase.crashlytics.recordException(it)
         }.addOnProgressListener {
-            val alertDialog = showOrHideInstallDialog(it.task)
-            val progressBar: LinearProgressIndicator? = alertDialog?.findViewById(R.id.installProgressIndicator)
-            if (progressBar != null) {
-                progressBar.progress = (it.bytesTransferred / it.totalByteCount).toInt() * 100
-                alertDialog.setTitle(R.string.installing)
-                alertDialog.setView(layoutInflater.inflate(R.layout.installing_uninstalling_dialog, null))
-            }
+            progressBar?.progress = (it.bytesTransferred / it.totalByteCount).toInt() * 100
         }
 
     }
