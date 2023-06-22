@@ -116,7 +116,7 @@ dependencies {
     ksp 'com.github.bumptech.glide:ksp:4.15.1'
 
     //Apache
-    implementation 'commons-codec:commons-codec:1.15'
+    implementation 'commons-codec:commons-codec:1.16.0'
 
     //Custom
     // implementation 'com.github.Udhayarajan:liquid-swipe-android:1.0.1'
