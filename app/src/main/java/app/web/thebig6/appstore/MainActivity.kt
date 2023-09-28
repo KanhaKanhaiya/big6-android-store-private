@@ -13,14 +13,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import app.web.thebig6.appstore.ui.theme.TheBig6ProjectAppStoreTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             TheBig6ProjectAppStoreTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    Greeting("Android")
-                }
+                ActivityLayout()
             }
         }
     }
@@ -36,8 +35,10 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun ActivityLayout() {
     TheBig6ProjectAppStoreTheme {
-        Greeting("Android")
+        Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+            Greeting("Android")
+        }
     }
 }
