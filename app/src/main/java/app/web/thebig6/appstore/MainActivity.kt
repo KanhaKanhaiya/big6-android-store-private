@@ -7,6 +7,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.preference.PreferenceManager.OnActivityResultListener
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
@@ -116,10 +118,8 @@ class MainActivity : ComponentActivity() {
 
     fun installApp(packageName: String, buttonText: MutableState<String>) {
         buttonText.value = "Starting"
-        //val storageRef = Firebase.storage.reference
-        //val appRef = storageRef.child("apks/$packageName.apk")
         val localapk = File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "test.apk")
-        //val task = appRef.getFile(localapk)
+
 
         val req = DownloadManager.Request(Uri.parse("https://github.com/zhanghai/MaterialFiles/releases/download/v1.7.4/app-release-universal.apk"))
         req.setDestinationInExternalFilesDir(this, Environment.DIRECTORY_DOWNLOADS, "test.apk")
@@ -127,36 +127,23 @@ class MainActivity : ComponentActivity() {
         val downloadManager: DownloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         downloadManager.enqueue(req)
 
-
-        //URL("https://github.com/zhanghai/MaterialFiles/releases/download/v1.7.4/app-release-universal.apk").openStream().use { input ->
-        //    FileOutputStream(localapk).use { output ->
-        //        input.copyTo(output)
-        //    }
-        //}
-
-        //task.addOnSuccessListener {
-            val intent = Intent(Intent.ACTION_VIEW)
+        val ur = FileProvider.getUriForFile(
+            this,
+            "app.web.thebig6.appstore.fileprovider",
+            localapk
+        )
+            val intent = Intent(Intent.ACTION_INSTALL_PACKAGE)
             intent.setDataAndType(
-//                Uri.fromFile(localapk)
-                FileProvider.getUriForFile(
-                    this,
-                    "app.web.thebig6.appstore.fileprovider",
-                    localapk
-                ), "application/vnd.android.package-archive"
+                ur, "application/vnd.android.package-archive"
             )
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-//            installAppAction(intent)
 
         startActivity(intent)
         //}.addOnProgressListener {
         //    buttonText.value = ((it.bytesTransferred / it.totalByteCount) * 100).toString()
         //}
     }
-
-    //fun installAppAction(intent: Intent): FileDownloadTask.TaskSnapshot? {
-    //    return null
-    //}
 
     @Preview
     @Composable
