@@ -1,6 +1,13 @@
 pluginManagement {
     repositories {
-        google()
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
+
         mavenCentral()
         gradlePluginPortal()
     }
@@ -13,6 +20,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "The big6 Project App Store"
+rootProject.name = "The big6 Store"
 include(":app")
  
