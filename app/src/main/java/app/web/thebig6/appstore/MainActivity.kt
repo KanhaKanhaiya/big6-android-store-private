@@ -7,8 +7,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.preference.PreferenceManager.OnActivityResultListener
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
@@ -35,14 +33,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.FileProvider
-import androidx.core.content.getSystemService
 import app.web.thebig6.appstore.ui.theme.TheBig6ProjectAppStoreTheme
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObject
 import java.io.File
-import java.io.FileOutputStream
-import java.net.URL
 
 class MainActivity : ComponentActivity() {
 
