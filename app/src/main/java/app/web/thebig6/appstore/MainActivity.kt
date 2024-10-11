@@ -4,10 +4,10 @@ import android.annotation.SuppressLint
 import android.app.DownloadManager
 import android.content.Context
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -33,11 +33,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.FileProvider
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import app.web.thebig6.appstore.ui.theme.TheBig6StoreTheme
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObject
+import com.permissionx.guolindev.PermissionX
 import kotlinx.coroutines.launch
 import ru.solrudev.ackpine.installer.PackageInstaller
 import ru.solrudev.ackpine.installer.createSession
@@ -47,7 +49,7 @@ import ru.solrudev.ackpine.session.parameters.Confirmation
 import java.io.File
 import kotlin.coroutines.cancellation.CancellationException
 
-class MainActivity : ComponentActivity() {
+class MainActivity : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,9 +59,20 @@ class MainActivity : ComponentActivity() {
                 ActivityLayout()
             }
         }
-
+        requestPermissions()
     }
 
+
+    private fun requestPermissions() {
+        val list = mutableStateListOf<String>()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            list.add(android.Manifest.permission.POST_NOTIFICATIONS)
+        }
+        list.add(android.Manifest.permission.REQUEST_INSTALL_PACKAGES)
+        PermissionX.init(this).permissions(list.toList()).explainReasonBeforeRequest().request { _, _, _ -> }
+
+        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+    }
 
     @SuppressLint("UnrememberedMutableState")
 //@Preview(showBackground = true)
@@ -90,14 +103,14 @@ class MainActivity : ComponentActivity() {
         Column {
             LazyColumn {
                 itemsIndexed(appList) { index, item ->
-                    AppRow(index, item)
+                    AppRow(item)
                 }
             }
         }
     }
 
     @Composable
-    fun AppRow(index: Int, item: App) {
+    fun AppRow(item: App) {
         Card(
             modifier = Modifier
                 .padding(5.dp)

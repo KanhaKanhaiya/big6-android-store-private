@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "app.web.thebig6.appstore"
-        minSdk = 21
+        minSdk = 23
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -71,4 +71,6 @@ dependencies {
 
     // optional - support for asset files inside of application's package
     implementation("ru.solrudev.ackpine:ackpine-assets:$ackpineVersion")
+
+    implementation("com.guolindev.permissionx:permissionx:1.8.1")
 }
