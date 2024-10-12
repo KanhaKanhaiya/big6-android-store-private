@@ -1,6 +1,5 @@
 package app.web.thebig6.appstore
 
-import android.annotation.SuppressLint
 import android.app.DownloadManager
 import android.content.Context
 import android.net.Uri
@@ -68,32 +67,29 @@ class MainActivity : FragmentActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             list.add(android.Manifest.permission.POST_NOTIFICATIONS)
         }
-        list.add(android.Manifest.permission.REQUEST_INSTALL_PACKAGES)
-        PermissionX.init(this).permissions(list.toList()).explainReasonBeforeRequest().request { _, _, _ -> }
-
-        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            list.add(android.Manifest.permission.REQUEST_INSTALL_PACKAGES)
+        }
+        PermissionX.init(this).permissions(list.toList()).explainReasonBeforeRequest()
+            .request { _, _, _ -> }
     }
 
-    @SuppressLint("UnrememberedMutableState")
-//@Preview(showBackground = true)
     @Composable
     fun ActivityLayout() {
-        TheBig6StoreTheme {
-            Surface(
-                modifier = Modifier.fillMaxSize(),
-                color = MaterialTheme.colorScheme.background
-            ) {
-                Column {
-                    val db = Firebase.firestore
-                    val appList = mutableStateListOf<App>()
-                    db.collection("AppStore").get().addOnSuccessListener { result ->
-                        for (appObj in result) {
-                            val app = appObj.toObject<App>()
-                            appList.add(app)
-                        }
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            Column {
+                val db = Firebase.firestore
+                val appList = remember { mutableStateListOf<App>() }
+                db.collection("AppStore").get().addOnSuccessListener { result ->
+                    for (appObj in result) {
+                        val app = appObj.toObject<App>()
+                        appList.add(app)
                     }
-                    AppList(appList)
                 }
+                AppList(appList)
             }
         }
     }
@@ -102,7 +98,7 @@ class MainActivity : FragmentActivity() {
     fun AppList(appList: SnapshotStateList<App>) {
         Column {
             LazyColumn {
-                itemsIndexed(appList) { index, item ->
+                itemsIndexed(appList) { _, item ->
                     AppRow(item)
                 }
             }
@@ -137,9 +133,8 @@ class MainActivity : FragmentActivity() {
 
         val packageInstaller = PackageInstaller.getInstance(this@MainActivity)
 
-        buttonText.value = "Starting"
-        val localapk = File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "test.apk")
-
+        buttonText.value = "Starting Download"
+        val localAPK = File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "test.apk")
 
         val req =
             DownloadManager.Request(Uri.parse("https://github.com/zhanghai/MaterialFiles/releases/download/v1.7.4/app-release-universal.apk"))
@@ -152,7 +147,7 @@ class MainActivity : FragmentActivity() {
         val ur = FileProvider.getUriForFile(
             this,
             "app.web.thebig6.appstore.fileprovider",
-            localapk
+            localAPK
         )
 
         val session = packageInstaller.createSession(ur) {
@@ -192,6 +187,8 @@ class MainActivity : FragmentActivity() {
         //}.addOnProgressListener {
         //    buttonText.value = ((it.bytesTransferred / it.totalByteCount) * 100).toString()
         //}
+
+        localAPK.delete()
     }
 
     @Preview
