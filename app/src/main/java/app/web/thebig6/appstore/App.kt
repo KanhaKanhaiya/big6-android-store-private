@@ -5,14 +5,15 @@ data class App(
     val oneLineDescription: String = "",
     val packageName: String = "",
     val version: String = "",
-    val versionCode: Int = 0,
+    val versionCode: Long = 0,
     val whatsNew: String = "",
     val screenshots: ArrayList<String>? = null,
     val updatedOn: String = "",
     val size: String = "",
     val description: String = "",
     val icon: String = "",
-    val isOpenable: Boolean = false,
+    val openable: String = "",
     val checksum: String = "",
-    val compatibleWith: String = ""
+    val compatibleWith: String = "",
+    val url: String = ""
 )

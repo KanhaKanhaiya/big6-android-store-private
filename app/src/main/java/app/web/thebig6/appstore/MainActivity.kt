@@ -1,8 +1,8 @@
 package app.web.thebig6.appstore
 
-import android.app.Application
 import android.app.DownloadManager
 import android.content.Context
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -35,10 +35,8 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.FileProvider
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
-import app.web.thebig6.appstore.appcheck.PlayIntegrityAppCheckTokenProviderFactory
 import app.web.thebig6.appstore.ui.theme.TheBig6StoreTheme
 import com.google.firebase.Firebase
-import com.google.firebase.appcheck.appCheck
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.initialize
@@ -63,9 +61,6 @@ class MainActivity : FragmentActivity() {
             }
         }
         Firebase.initialize(this)
-//        Firebase.appCheck.installAppCheckProviderFactory(
-//            PlayIntegrityAppCheckTokenProviderFactory(this@MainActivity)
-//        )
         requestPermissions()
     }
 
@@ -120,20 +115,37 @@ class MainActivity : FragmentActivity() {
                 .fillMaxWidth()
         ) {
             Column(modifier = Modifier.padding(10.dp)) {
-                Text(text = "Test", fontSize = 25.sp)
+                Text(text = item.name, fontSize = 25.sp)
                 Spacer(modifier = Modifier.height(5.dp))
                 val buttonText = remember {
-                    mutableStateOf("Install")
+                    val isPackageInstalledCheck = isPackageInstalled(item.packageName)
+                    //Toast.makeText(this@MainActivity, item.openable, Toast.LENGTH_LONG).show()
+                    mutableStateOf(if (!isPackageInstalledCheck.first) "Install" else { if (item.versionCode != isPackageInstalledCheck.second) "Update" else { if (item.openable == "true") "Open" else "Installed" }})
                 }
                 Button(onClick = {
+                    if (buttonText.value == "Install" || buttonText.value == "Update")
                     lifecycleScope.launch {
-                        installApp(item.packageName, buttonText)
+                        installApp(item.url, buttonText)
                     }
+                    else if (buttonText.value == "Open")
+                        startActivity(packageManager.getLaunchIntentForPackage(item.packageName))
                 }) {
                     Text(text = buttonText.value)
                 }
             }
         }
+    }
+
+    private fun isPackageInstalled(name: String) : Pair<Boolean, Long> {
+        var result = false
+        var versionCode = 0L
+        try {
+            val packageInfo = this.packageManager.getPackageInfo(name, PackageManager.GET_ACTIVITIES)
+            versionCode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) packageInfo.longVersionCode else packageInfo.versionCode.toLong()
+            result = true
+        } catch (_: PackageManager.NameNotFoundException) {}
+
+        return Pair(result, versionCode)
     }
 
     private suspend fun installApp(packageName: String, buttonText: MutableState<String>) {
