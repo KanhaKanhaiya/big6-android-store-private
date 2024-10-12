@@ -160,7 +160,7 @@ class MainActivity : FragmentActivity() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !this.packageManager.canRequestPackageInstalls()) {
             startActivity(Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, Uri.parse("package:app.web.thebig6.appstore")))
-
+            TODO("Move this logic to onCreate")
         }
         val packageInstaller = PackageInstaller.getInstance(this@MainActivity)
 
