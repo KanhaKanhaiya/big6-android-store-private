@@ -1,5 +1,6 @@
 package app.web.thebig6.appstore
 
+import android.app.Application
 import android.app.DownloadManager
 import android.content.Context
 import android.net.Uri
@@ -34,10 +35,13 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.FileProvider
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
+import app.web.thebig6.appstore.appcheck.PlayIntegrityAppCheckTokenProviderFactory
 import app.web.thebig6.appstore.ui.theme.TheBig6StoreTheme
 import com.google.firebase.Firebase
+import com.google.firebase.appcheck.appCheck
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObject
+import com.google.firebase.initialize
 import com.permissionx.guolindev.PermissionX
 import kotlinx.coroutines.launch
 import ru.solrudev.ackpine.installer.PackageInstaller
@@ -58,9 +62,12 @@ class MainActivity : FragmentActivity() {
                 ActivityLayout()
             }
         }
+        Firebase.initialize(this)
+//        Firebase.appCheck.installAppCheckProviderFactory(
+//            PlayIntegrityAppCheckTokenProviderFactory(this@MainActivity)
+//        )
         requestPermissions()
     }
-
 
     private fun requestPermissions() {
         val list = mutableStateListOf<String>()

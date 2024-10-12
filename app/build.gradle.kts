@@ -56,9 +56,12 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
+    implementation("com.google.android.play:integrity:1.4.0")
+
     implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.firebase:firebase-appcheck")
 
     val ackpineVersion = "0.7.5"
     implementation("ru.solrudev.ackpine:ackpine-core:$ackpineVersion")
