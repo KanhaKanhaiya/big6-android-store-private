@@ -76,4 +76,8 @@ dependencies {
     implementation("ru.solrudev.ackpine:ackpine-assets:$ackpineVersion")
 
     implementation("com.guolindev.permissionx:permissionx:1.8.1")
+
+    implementation("com.github.amitshekhariitbhu:PRDownloader:1.0.1")
+    implementation("com.github.tonyofrancis.Fetch:fetch2:3.3.0")
+    implementation("com.koushikdutta.ion:ion:3.1.0")
 }

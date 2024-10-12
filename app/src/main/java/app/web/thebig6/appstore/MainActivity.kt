@@ -1,12 +1,12 @@
 package app.web.thebig6.appstore
 
-import android.app.DownloadManager
-import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
@@ -40,7 +40,12 @@ import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.initialize
+import com.koushikdutta.async.future.FutureCallback
+import com.koushikdutta.ion.Ion
+import com.koushikdutta.ion.ProgressCallback
 import com.permissionx.guolindev.PermissionX
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.solrudev.ackpine.installer.PackageInstaller
 import ru.solrudev.ackpine.installer.createSession
@@ -50,7 +55,10 @@ import ru.solrudev.ackpine.session.parameters.Confirmation
 import java.io.File
 import kotlin.coroutines.cancellation.CancellationException
 
+
 class MainActivity : FragmentActivity() {
+
+   // private var fetch: Fetch? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,7 +133,7 @@ class MainActivity : FragmentActivity() {
                 Button(onClick = {
                     if (buttonText.value == "Install" || buttonText.value == "Update")
                     lifecycleScope.launch {
-                        installApp(item.url, buttonText)
+                        installApp(item, buttonText)
                     }
                     else if (buttonText.value == "Open")
                         startActivity(packageManager.getLaunchIntentForPackage(item.packageName))
@@ -148,20 +156,16 @@ class MainActivity : FragmentActivity() {
         return Pair(result, versionCode)
     }
 
-    private suspend fun installApp(packageName: String, buttonText: MutableState<String>) {
+    private fun installApp(app: App, buttonText: MutableState<String>) {
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !this.packageManager.canRequestPackageInstalls()) {
+            startActivity(Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, Uri.parse("package:app.web.thebig6.appstore")))
+
+        }
         val packageInstaller = PackageInstaller.getInstance(this@MainActivity)
 
-        buttonText.value = "Starting Download"
-        val localAPK = File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "test.apk")
-
-        val req =
-            DownloadManager.Request(Uri.parse("https://github.com/zhanghai/MaterialFiles/releases/download/v1.7.4/app-release-universal.apk"))
-        req.setDestinationInExternalFilesDir(this, Environment.DIRECTORY_DOWNLOADS, "test.apk")
-
-        val downloadManager: DownloadManager =
-            getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-        downloadManager.enqueue(req)
+        buttonText.value = "Downloading"
+        val localAPK = File(filesDir, "APKs/${app.packageName}.apk")
 
         val ur = FileProvider.getUriForFile(
             this,
@@ -169,43 +173,39 @@ class MainActivity : FragmentActivity() {
             localAPK
         )
 
-        val session = packageInstaller.createSession(ur) {
-            confirmation = Confirmation.IMMEDIATE
-            requireUserAction = false
-        }
+        Ion.with(this)
+            .load(app.url)
 
-        try {
-            when (val result = session.await()) {
-                is SessionResult.Success -> Toast.makeText(
-                    this@MainActivity,
-                    result.toString(),
-                    Toast.LENGTH_LONG
-                ).show()
 
-                is SessionResult.Error -> Toast.makeText(
-                    this@MainActivity,
-                    result.cause.message,
-                    Toast.LENGTH_LONG
-                ).show()
+            .write(localAPK)
+            .setCallback { e, file ->
+                if (e == null) {
+                    Toast.makeText(this, file.path, Toast.LENGTH_LONG).show()
+                    val session = packageInstaller.createSession(ur) {
+                        confirmation = Confirmation.IMMEDIATE
+                        requireUserAction = false
+                    }
+
+                    CoroutineScope(Dispatchers.IO).launch {
+                        try {
+                            buttonText.value = "Installing"
+                            when (val result = session.await()) {
+                                is SessionResult.Success -> buttonText.value = if (app.openable == "true") "Open" else "Installed"
+
+                                is SessionResult.Error -> Toast.makeText(
+                                    this@MainActivity,
+                                    result.cause.message,
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        } catch (_: CancellationException) {
+                            println("Cancelled")
+                        } catch (exception: Exception) {
+                            println(exception)
+                        }
+                    }
+                }
             }
-        } catch (_: CancellationException) {
-            println("Cancelled")
-        } catch (exception: Exception) {
-            println(exception)
-        }
-
-
-//            val intent = Intent(Intent.ACTION_INSTALL_PACKAGE)
-//            intent.setDataAndType(
-//                ur, "application/vnd.android.package-archive"
-//            )
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-//
-//        startActivity(intent)
-        //}.addOnProgressListener {
-        //    buttonText.value = ((it.bytesTransferred / it.totalByteCount) * 100).toString()
-        //}
 
         localAPK.delete()
     }
