@@ -34,7 +34,6 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.FileProvider
 import androidx.core.content.pm.PackageInfoCompat
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.lifecycleScope
 import app.web.thebig6.store.ui.theme.TheBig6StoreTheme
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
@@ -66,7 +65,12 @@ class MainActivity : FragmentActivity() {
         }
         Firebase.initialize(this)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !this.packageManager.canRequestPackageInstalls()) {
-            startActivity(Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, Uri.parse("package:app.web.thebig6.store")))
+            startActivity(
+                Intent(
+                    Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
+                    Uri.parse("package:app.web.thebig6.store")
+                )
+            )
         }
         requestPermissions()
     }
@@ -126,14 +130,17 @@ class MainActivity : FragmentActivity() {
                 Spacer(modifier = Modifier.height(5.dp))
                 val buttonText = remember {
                     val isPackageInstalledCheck = isPackageInstalled(item.packageName)
-                    //Toast.makeText(this@MainActivity, item.openable, Toast.LENGTH_LONG).show()
-                    mutableStateOf(if (!isPackageInstalledCheck.first) "Install" else { if (item.versionCode != isPackageInstalledCheck.second) "Update" else { if (item.openable == "true") "Open" else "Installed" }})
+                    mutableStateOf(
+                        if (!isPackageInstalledCheck.first) "Install" else {
+                            if (item.versionCode != isPackageInstalledCheck.second) "Update" else {
+                                if (item.openable == "true") "Open" else "Installed"
+                            }
+                        }
+                    )
                 }
                 Button(onClick = {
                     if (buttonText.value == "Install" || buttonText.value == "Update")
-                    lifecycleScope.launch {
                         installApp(item, buttonText)
-                    }
                     else if (buttonText.value == "Open")
                         startActivity(packageManager.getLaunchIntentForPackage(item.packageName))
                 }) {
@@ -143,21 +150,21 @@ class MainActivity : FragmentActivity() {
         }
     }
 
-    private fun isPackageInstalled(name: String) : Pair<Boolean, Long> {
+    private fun isPackageInstalled(name: String): Pair<Boolean, Long> {
         var result = false
         var versionCode = 0L
         try {
-            val packageInfo = this.packageManager.getPackageInfo(name, PackageManager.GET_ACTIVITIES)
+            val packageInfo =
+                this.packageManager.getPackageInfo(name, PackageManager.GET_ACTIVITIES)
             versionCode = PackageInfoCompat.getLongVersionCode(packageInfo)
             result = true
-        } catch (_: PackageManager.NameNotFoundException) {}
+        } catch (_: PackageManager.NameNotFoundException) {
+        }
 
         return Pair(result, versionCode)
     }
 
     private fun installApp(app: App, buttonText: MutableState<String>) {
-
-
         val packageInstaller = PackageInstaller.getInstance(this@MainActivity)
 
         buttonText.value = "Downloading"
@@ -171,8 +178,6 @@ class MainActivity : FragmentActivity() {
 
         Ion.with(this)
             .load(app.url)
-
-
             .write(localAPK)
             .setCallback { e, file ->
                 if (e == null) {
@@ -186,7 +191,8 @@ class MainActivity : FragmentActivity() {
                         try {
                             buttonText.value = "Installing"
                             when (val result = session.await()) {
-                                is SessionResult.Success -> buttonText.value = if (app.openable == "true") "Open" else "Installed"
+                                is SessionResult.Success -> buttonText.value =
+                                    if (app.openable == "true") "Open" else "Installed"
 
                                 is SessionResult.Error -> Toast.makeText(
                                     this@MainActivity,
