@@ -32,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.FileProvider
+import androidx.core.content.pm.PackageInfoCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import app.web.thebig6.store.ui.theme.TheBig6StoreTheme
@@ -55,8 +56,6 @@ import kotlin.coroutines.cancellation.CancellationException
 
 class MainActivity : FragmentActivity() {
 
-   // private var fetch: Fetch? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -66,6 +65,9 @@ class MainActivity : FragmentActivity() {
             }
         }
         Firebase.initialize(this)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !this.packageManager.canRequestPackageInstalls()) {
+            startActivity(Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, Uri.parse("package:app.web.thebig6.store")))
+        }
         requestPermissions()
     }
 
@@ -146,7 +148,7 @@ class MainActivity : FragmentActivity() {
         var versionCode = 0L
         try {
             val packageInfo = this.packageManager.getPackageInfo(name, PackageManager.GET_ACTIVITIES)
-            versionCode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) packageInfo.longVersionCode else packageInfo.versionCode.toLong()
+            versionCode = PackageInfoCompat.getLongVersionCode(packageInfo)
             result = true
         } catch (_: PackageManager.NameNotFoundException) {}
 
@@ -155,10 +157,7 @@ class MainActivity : FragmentActivity() {
 
     private fun installApp(app: App, buttonText: MutableState<String>) {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !this.packageManager.canRequestPackageInstalls()) {
-            startActivity(Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, Uri.parse("package:app.web.thebig6.store")))
-            TODO("Move this logic to onCreate")
-        }
+
         val packageInstaller = PackageInstaller.getInstance(this@MainActivity)
 
         buttonText.value = "Downloading"
