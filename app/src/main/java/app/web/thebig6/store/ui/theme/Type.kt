@@ -1,4 +1,4 @@
-package app.web.thebig6.appstore.ui.theme
+package app.web.thebig6.store.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

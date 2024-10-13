@@ -1,4 +1,4 @@
-package app.web.thebig6.appstore.ui.theme
+package app.web.thebig6.store.ui.theme
 
 import android.app.Activity
 import android.os.Build

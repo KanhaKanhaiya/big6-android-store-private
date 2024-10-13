@@ -1,4 +1,4 @@
-package app.web.thebig6.appstore
+package app.web.thebig6.store
 
 import org.junit.Test
 

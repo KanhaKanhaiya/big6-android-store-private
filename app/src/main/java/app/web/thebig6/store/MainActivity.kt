@@ -1,11 +1,10 @@
-package app.web.thebig6.appstore
+package app.web.thebig6.store
 
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.compose.setContent
@@ -35,14 +34,12 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.FileProvider
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
-import app.web.thebig6.appstore.ui.theme.TheBig6StoreTheme
+import app.web.thebig6.store.ui.theme.TheBig6StoreTheme
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.initialize
-import com.koushikdutta.async.future.FutureCallback
 import com.koushikdutta.ion.Ion
-import com.koushikdutta.ion.ProgressCallback
 import com.permissionx.guolindev.PermissionX
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -159,7 +156,7 @@ class MainActivity : FragmentActivity() {
     private fun installApp(app: App, buttonText: MutableState<String>) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !this.packageManager.canRequestPackageInstalls()) {
-            startActivity(Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, Uri.parse("package:app.web.thebig6.appstore")))
+            startActivity(Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, Uri.parse("package:app.web.thebig6.store")))
             TODO("Move this logic to onCreate")
         }
         val packageInstaller = PackageInstaller.getInstance(this@MainActivity)
@@ -169,7 +166,7 @@ class MainActivity : FragmentActivity() {
 
         val ur = FileProvider.getUriForFile(
             this,
-            "app.web.thebig6.appstore.fileprovider",
+            "app.web.thebig6.store.fileprovider",
             localAPK
         )
 

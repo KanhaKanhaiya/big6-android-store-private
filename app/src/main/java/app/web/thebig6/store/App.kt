@@ -1,4 +1,4 @@
-package app.web.thebig6.appstore
+package app.web.thebig6.store
 
 data class App(
     val name: String = "",

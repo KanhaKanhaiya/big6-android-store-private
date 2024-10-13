@@ -31,7 +31,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="app.web.thebig6.appstore.fileprovider"
+            android:authorities="app.web.thebig6.store.fileprovider"
             android:exported="false"
             android:enabled="true"
             android:grantUriPermissions="true">

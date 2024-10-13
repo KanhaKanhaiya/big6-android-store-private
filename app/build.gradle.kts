@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "app.web.thebig6.appstore"
+    namespace = "app.web.thebig6.store"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "app.web.thebig6.appstore"
+        applicationId = "app.web.thebig6.store"
         minSdk = 21
         targetSdk = 34
         versionCode = 1
