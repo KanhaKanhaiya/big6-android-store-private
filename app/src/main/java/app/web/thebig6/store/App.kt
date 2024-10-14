@@ -1,5 +1,7 @@
 package app.web.thebig6.store
 
+import java.io.Serializable
+
 data class App(
     val name: String = "",
     val oneLineDescription: String = "",
@@ -16,4 +18,4 @@ data class App(
     val checksum: String = "",
     val compatibleWith: String = "",
     val url: String = ""
-)
+) : Serializable

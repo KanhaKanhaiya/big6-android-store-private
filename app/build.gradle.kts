@@ -3,18 +3,19 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.android)
     id("com.google.gms.google-services")
     alias(libs.plugins.compose.compiler)
+    id("com.google.firebase.crashlytics")
 }
 
 android {
     namespace = "app.web.thebig6.store"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "app.web.thebig6.store"
         minSdk = 21
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        targetSdk = 35
+        versionCode = 2
+        versionName = "0.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -40,44 +41,42 @@ android {
 dependencies {
 
 
-    implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")
-    implementation("androidx.activity:activity-compose:1.9.2")
-    implementation(platform("androidx.compose:compose-bom:2024.09.03"))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2024.09.03"))
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    implementation(libs.androidx.activity)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation("com.google.android.play:integrity:1.4.0")
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.crashlytics)
 
-    implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
-    implementation("com.google.firebase:firebase-analytics")
-    implementation("com.google.firebase:firebase-firestore")
-    implementation("com.google.firebase:firebase-appcheck")
-
-    val ackpineVersion = "0.7.5"
-    implementation("ru.solrudev.ackpine:ackpine-core:$ackpineVersion")
-
+    implementation(libs.ackpine.core)
     // optional - Kotlin extensions and Coroutines support
-    implementation("ru.solrudev.ackpine:ackpine-ktx:$ackpineVersion")
-
+    implementation(libs.ackpine.ktx)
     // optional - utilities for working with split APKs
-    implementation("ru.solrudev.ackpine:ackpine-splits:$ackpineVersion")
-
+    implementation(libs.ackpine.splits)
     // optional - support for asset files inside of application's package
-    implementation("ru.solrudev.ackpine:ackpine-assets:$ackpineVersion")
+    implementation(libs.ackpine.assets)
 
-    implementation("com.guolindev.permissionx:permissionx:1.8.1")
+    implementation(libs.permissionx)
 
-    implementation("com.github.amitshekhariitbhu:PRDownloader:1.0.1")
-    implementation("com.github.tonyofrancis.Fetch:fetch2:3.3.0")
-    implementation("com.koushikdutta.ion:ion:3.1.0")
+    implementation(libs.ion)
+
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
 }
