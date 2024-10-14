@@ -64,6 +64,8 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.messaging)
+    implementation(libs.firebase.database)
 
     implementation(libs.ackpine.core)
     // optional - Kotlin extensions and Coroutines support

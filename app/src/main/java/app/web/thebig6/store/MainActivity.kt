@@ -81,7 +81,6 @@ class MainActivity : FragmentActivity() {
             }
         }
         Firebase.initialize(this)
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !this.packageManager.canRequestPackageInstalls()) {
                 startActivity(
                     Intent(
@@ -120,10 +119,10 @@ class MainActivity : FragmentActivity() {
     @Composable
     fun ActivityLayout() {
         Surface(
-            modifier = Modifier.safeDrawingPadding(),
+            modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            Column {
+            Column(Modifier.safeDrawingPadding()) {
                 val db = Firebase.firestore
                 val appList = remember { mutableStateListOf<App>() }
                 db.collection("AppStore").get().addOnSuccessListener { result ->

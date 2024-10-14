@@ -9,12 +9,14 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -47,8 +49,8 @@ class AppDetailsActivity : ComponentActivity() {
         setContent {
             TheBig6StoreTheme {
                 Surface(
-                    modifier = Modifier.safeDrawingPadding(),
-                    color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize()
+                 //   color = MaterialTheme.colorScheme.background
                 ) {
                     app = IntentCompat.getSerializableExtra(intent, "app", App::class.java)
                     AppDetails()
@@ -60,17 +62,16 @@ class AppDetailsActivity : ComponentActivity() {
     @Preview
     @Composable
     private fun AppDetails() {
-        Column(Modifier.padding(15.dp)) {
+        Column(Modifier.safeDrawingPadding().padding(15.dp).verticalScroll(rememberScrollState())) {
             Row {
                 AsyncImage(model = app!!.icon, "${app!!.name} Icon", modifier = Modifier.clip(
                     RoundedCornerShape(20.dp)
-                ).height(90.dp).padding(end = 15.dp))
-                Column {
+                ).height(90.dp))
+                Column(Modifier.padding(start = 10.dp)) {
                     Text(app!!.name, fontSize = 35.sp, fontWeight = FontWeight.Black, fontFamily = FontFamily.Cursive)
                     Text(app!!.oneLineDescription, fontSize = 17.sp, fontWeight = FontWeight.Thin, fontFamily = FontFamily.SansSerif)
                 }
             }
-
             Spacer(Modifier.padding(15.dp))
             val buttonText = remember {
                 val isPackageInstalledCheck = isPackageInstalled(
@@ -99,7 +100,7 @@ class AppDetailsActivity : ComponentActivity() {
                 app!!.screenshots!!.forEach { url ->
                     AsyncImage(model = url, "Screenshot of ${app!!.name}", modifier = Modifier.padding(end = 10.dp).clip(
                         RoundedCornerShape(15.dp)
-                    ))
+                    ).height(500.dp))
                 }
             }
             Row {
