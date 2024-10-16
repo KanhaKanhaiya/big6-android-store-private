@@ -12,10 +12,10 @@ android {
 
     defaultConfig {
         applicationId = "app.web.thebig6.store"
-        minSdk = 21
+        minSdk = 23
         targetSdk = 35
-        versionCode = 3
-        versionName = "0.0.2"
+        versionCode = 4
+        versionName = "0.0.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -59,6 +59,8 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
@@ -66,6 +68,10 @@ dependencies {
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.messaging)
     implementation(libs.firebase.database)
+    implementation(libs.firebase.auth)
+
+    implementation(libs.play.services.auth)
+    implementation(libs.googleid)
 
     implementation(libs.ackpine.core)
     // optional - Kotlin extensions and Coroutines support

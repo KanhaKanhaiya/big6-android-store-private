@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,13 +12,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,7 +25,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -50,7 +46,7 @@ class AppDetailsActivity : ComponentActivity() {
             TheBig6StoreTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize()
-                 //   color = MaterialTheme.colorScheme.background
+                    //   color = MaterialTheme.colorScheme.background
                 ) {
                     app = IntentCompat.getSerializableExtra(intent, "app", App::class.java)
                     AppDetails()
@@ -62,14 +58,32 @@ class AppDetailsActivity : ComponentActivity() {
     @Preview
     @Composable
     private fun AppDetails() {
-        Column(Modifier.safeDrawingPadding().padding(15.dp).verticalScroll(rememberScrollState())) {
+        Column(
+            Modifier
+                .safeDrawingPadding()
+                .padding(15.dp)
+                .verticalScroll(rememberScrollState())) {
             Row {
-                AsyncImage(model = app!!.icon, "${app!!.name} Icon", modifier = Modifier.clip(
-                    RoundedCornerShape(20.dp)
-                ).height(90.dp))
+                AsyncImage(
+                    model = app!!.icon, "${app!!.name} Icon", modifier = Modifier
+                        .clip(
+                            RoundedCornerShape(20.dp)
+                        )
+                        .height(90.dp)
+                )
                 Column(Modifier.padding(start = 10.dp)) {
-                    Text(app!!.name, fontSize = 35.sp, fontWeight = FontWeight.Black, fontFamily = FontFamily.Cursive)
-                    Text(app!!.oneLineDescription, fontSize = 17.sp, fontWeight = FontWeight.Thin, fontFamily = FontFamily.SansSerif)
+                    Text(
+                        app!!.name,
+                        fontSize = 35.sp,
+                        fontWeight = FontWeight.Black,
+                        fontFamily = FontFamily.Cursive
+                    )
+                    Text(
+                        app!!.oneLineDescription,
+                        fontSize = 17.sp,
+                        fontWeight = FontWeight.Thin,
+                        fontFamily = FontFamily.SansSerif
+                    )
                 }
             }
             Spacer(Modifier.padding(15.dp))
@@ -95,12 +109,28 @@ class AppDetailsActivity : ComponentActivity() {
                 Text(text = buttonText.value, modifier = Modifier.padding(horizontal = 50.dp))
             }
             HorizontalDivider(Modifier.padding(bottom = 20.dp))
-            Text("Screenshots", modifier = Modifier.padding(bottom = 5.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold)
-            Row(modifier = Modifier.horizontalScroll(rememberScrollState()).padding(bottom = 20.dp)) {
+            Text(
+                "Screenshots",
+                modifier = Modifier.padding(bottom = 5.dp),
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Row(
+                modifier = Modifier
+                    .horizontalScroll(rememberScrollState())
+                    .padding(bottom = 20.dp)
+            ) {
                 app!!.screenshots!!.forEach { url ->
-                    AsyncImage(model = url, "Screenshot of ${app!!.name}", modifier = Modifier.padding(end = 10.dp).clip(
-                        RoundedCornerShape(15.dp)
-                    ).height(500.dp))
+                    AsyncImage(
+                        model = url,
+                        "Screenshot of ${app!!.name}",
+                        modifier = Modifier
+                            .padding(end = 10.dp)
+                            .clip(
+                                RoundedCornerShape(15.dp)
+                            )
+                            .height(500.dp)
+                    )
                 }
             }
             Row {
@@ -115,9 +145,19 @@ class AppDetailsActivity : ComponentActivity() {
                 Text("Size : ", fontWeight = FontWeight.Light)
                 Text(app!!.size)
             }
-            Text("What's New", fontWeight = FontWeight.Bold, fontSize = 20.sp, modifier = Modifier.padding(top = 25.dp, bottom = 10.dp))
+            Text(
+                "What's New",
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp,
+                modifier = Modifier.padding(top = 25.dp, bottom = 10.dp)
+            )
             Text(app!!.whatsNew)
-            Text("About ${app!!.name}", fontSize = 20.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 25.dp, bottom = 10.dp))
+            Text(
+                "About ${app!!.name}",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(top = 25.dp, bottom = 10.dp)
+            )
             Text(app!!.description)
         }
     }

@@ -18,6 +18,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TheBig6Store"
         tools:targetApi="31">
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:theme="@style/Theme.TheBig6Store" />
+
         <service
             android:name=".services.NotificationsService"
             android:enabled="true"
@@ -31,7 +36,7 @@
             android:name=".AppDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".SignInActivity"
             android:exported="true"
             android:theme="@style/Theme.TheBig6Store"
             android:windowSoftInputMode="adjustResize">
