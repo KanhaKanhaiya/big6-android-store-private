@@ -1,8 +1,5 @@
 package app.web.thebig6.store.services
 
-import android.app.Service
-import android.content.Intent
-import android.os.IBinder
 import com.google.firebase.Firebase
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.database
