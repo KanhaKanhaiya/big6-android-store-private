@@ -1,5 +1,6 @@
 package app.web.thebig6.store
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -26,7 +27,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.IntentCompat
@@ -34,6 +34,8 @@ import app.web.thebig6.store.ui.theme.TheBig6StoreTheme
 import app.web.thebig6.store.utils.installApp
 import app.web.thebig6.store.utils.isPackageInstalled
 import coil3.compose.AsyncImage
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 
 class AppDetailsActivity : ComponentActivity() {
 
@@ -53,9 +55,11 @@ class AppDetailsActivity : ComponentActivity() {
                 }
             }
         }
+        if (Firebase.auth.currentUser == null)
+            startActivity(Intent(this, SignInActivity::class.java))
+
     }
 
-    @Preview
     @Composable
     private fun AppDetails() {
         Column(

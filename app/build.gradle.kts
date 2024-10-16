@@ -4,6 +4,7 @@ plugins {
     id("com.google.gms.google-services")
     alias(libs.plugins.compose.compiler)
     id("com.google.firebase.crashlytics")
+    id("com.google.firebase.firebase-perf")
 }
 
 android {
@@ -14,8 +15,8 @@ android {
         applicationId = "app.web.thebig6.store"
         minSdk = 23
         targetSdk = 35
-        versionCode = 4
-        versionName = "0.0.3"
+        versionCode = 5
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -67,8 +68,9 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.messaging)
-    implementation(libs.firebase.database)
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.perf)
+    implementation(libs.firebase.inappmessaging.display)
 
     implementation(libs.play.services.auth)
     implementation(libs.googleid)

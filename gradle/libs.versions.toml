@@ -44,7 +44,9 @@ firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "fir
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 firebase-database = { module = "com.google.firebase:firebase-database" }
 firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
+firebase-inappmessaging-display = { module = "com.google.firebase:firebase-inappmessaging-display" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
+firebase-perf = { module = "com.google.firebase:firebase-perf" }
 googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version = "1.1.1" }
 ion = { module = "com.koushikdutta.ion:ion", version.ref = "ion" }
 junit = { module = "junit:junit", version.ref = "junit" }

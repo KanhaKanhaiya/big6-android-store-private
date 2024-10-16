@@ -69,7 +69,7 @@ class SignInActivity : ComponentActivity() {
                 login()
             }, shape = RoundedCornerShape(5.dp)) {
                 Image(painter = painterResource(R.drawable.googleg_standard_color_18), null)
-                Text("Sign in with Google", Modifier.padding(5.dp))
+                Text("Sign in with Google", Modifier.padding(5.dp).padding(start = 5.dp))
             }
         }
     }
@@ -159,5 +159,6 @@ class SignInActivity : ComponentActivity() {
                 }
             }
         }
+        else startActivity(Intent(this, MainActivity::class.java))
     }
 }
