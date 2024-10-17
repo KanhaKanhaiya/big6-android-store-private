@@ -12,7 +12,7 @@ kotlin = "2.0.0"
 appcompat = "1.7.0"
 lifecycleRuntimeKtx = "2.8.6"
 material = "1.12.0"
-activity = "1.9.2"
+activity = "1.9.3"
 permissionxVersion = "1.8.1"
 playServicesAuthVersion = "21.2.0"
 [libraries]
